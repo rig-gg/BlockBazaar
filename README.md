@@ -3,7 +3,7 @@
 **A blockchain-based marketplace token system for buying, selling, and transferring digital tokens securely.**
 
 > **Course:** CSIT360 - INTRODUCTION TO BLOCKCHAIN
-> **Submitted by:** Gyle M. Amihan**Karl Andrei B. Abriz
+> **Submitted by:** Gyle M. Amihan**Karl Andrei B. Abriz**Kirsten Shane Baldon
 > **Instructor:** John Quinnvic G. Taboada
 > **Academic Year:** 2025–2026
 
