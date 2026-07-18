@@ -4,11 +4,11 @@
 
 | Member | Role | Primary Focus |
 |--------|------|---------------|
-| **Gyle M. Amihan** | Backend Lead | Blockchain core, hashing logic, chain verification, DB schema |
-| **Karl Andrei B. Abriz** | Full-stack | Auth system, wallet endpoints, transaction logic, Spring Boot config |
-| **Kirsten Shane Baldon** | Frontend Lead | React app, all UI pages, API integration, styling |
+| **Gyle M. Amihan** | Backend (Solo) | All Spring Boot code: auth, blockchain, wallet, transactions, marketplace, external API, DB schema |
+| **Karl Andrei B. Abriz** | Frontend | React pages, components, styling, API integration |
+| **Kirsten Shane Baldon** | Frontend | React pages, components, styling, API integration |
 
-> **Note:** Everyone touches the README/docs. Backend members coordinate on API contracts before coding. Frontend member stubs pages with mock data early, then integrates once backend endpoints are live.
+> **Note:** Gyle owns all backend. Karl and Kirsten split frontend work between them. Coordinate on API contracts before Day 1 ends. Gyle shares the API reference doc so frontend can stub pages with mock data early.
 
 ---
 
@@ -18,17 +18,18 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Create Spring Boot project (`spring-init` or Spring Initializr) | Karl | ☐ |
-| Create React project (`npx create-react-app frontend`) | Kirsten | ☐ |
+| Create Spring Boot project (`spring-init` or Spring Initializr) | Gyle | ☐ |
 | Set up Supabase PostgreSQL project, share credentials | Gyle | ☐ |
-| Write `schema.sql` (all 4 tables) | Gyle | ☐ |
-| Configure `application.properties` (DB URL, JPA, JWT secret) | Karl | ☐ |
-| Implement `User` and `Wallet` JPA models | Karl | ☐ |
-| Implement `UserRepository` and `WalletRepository` | Karl | ☐ |
-| Implement `AuthController` + `AuthService` (register + login) | Karl | ☐ |
-| Implement `JwtUtil` and `JwtAuthFilter` | Karl | ☐ |
-| Implement `SecurityConfig` (Spring Security + JWT filter) | Karl | ☐ |
-| Build React login and register pages | Kirsten | ☐ |
+| Write and run `schema.sql` (all 4 tables) | Gyle | ☐ |
+| Configure `application.properties` (DB URL, JPA, JWT secret) | Gyle | ☐ |
+| Implement `User` and `Wallet` JPA models | Gyle | ☐ |
+| Implement `UserRepository` and `WalletRepository` | Gyle | ☐ |
+| Implement `AuthController` + `AuthService` (register + login) | Gyle | ☐ |
+| Implement `JwtUtil` and `JwtAuthFilter` | Gyle | ☐ |
+| Implement `SecurityConfig` (Spring Security + JWT filter) | Gyle | ☐ |
+| Create React project (`npx create-react-app frontend`) | Karl | ☐ |
+| Build React login page | Karl | ☐ |
+| Build React register page | Karl | ☐ |
 | Set up `AuthContext` for JWT token storage | Kirsten | ☐ |
 | Set up Axios API service with base URL | Kirsten | ☐ |
 | Set up `ProtectedRoute` component | Kirsten | ☐ |
@@ -48,13 +49,13 @@
 | Implement `BlockchainService` (hash computation, genesis block, chain walk) | Gyle | ☐ |
 | Implement `ChainController` (`GET /api/chain/verify`) | Gyle | ☐ |
 | Write SHA-256 hashing utility + unit test | Gyle | ☐ |
-| Implement `WalletController` (`GET /api/wallet`) | Karl | ☐ |
-| Implement `WalletService` (balance check, wallet lookup) | Karl | ☐ |
-| Wire auth: extract user from JWT in all endpoints | Karl | ☐ |
-| Build Dashboard page (show balance, quick actions) | Kirsten | ☐ |
-| Build Navbar component with navigation links | Kirsten | ☐ |
+| Implement `WalletController` (`GET /api/wallet`) | Gyle | ☐ |
+| Implement `WalletService` (balance check, wallet lookup) | Gyle | ☐ |
+| Wire auth: extract user from JWT in all endpoints | Gyle | ☐ |
+| Build Dashboard page (show balance, quick actions) | Karl | ☐ |
+| Build Navbar component with navigation links | Karl | ☐ |
 | Build Chain Verification page (call `/api/chain/verify`, display result) | Kirsten | ☐ |
-| Test chain verify endpoint with Postman/curl | Gyle | ☐ |
+| Test auth + wallet endpoints with Postman/curl | Gyle | ☐ |
 
 **Day 2 Deliverable:** Blockchain hashing and verification works. Users can see their wallet balance. Chain verify returns integrity status.
 
@@ -64,15 +65,15 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Implement `TransferRequest` DTO | Karl | ☐ |
-| Implement `TransactionService` (transfer logic: debit, credit, create block) | Karl | ☐ |
-| Implement `TransactionController` (`POST /api/transactions/transfer`, `GET /api/transactions`) | Karl | ☐ |
-| Add balance validation (reject if insufficient funds) | Karl | ☐ |
+| Implement `TransferRequest` DTO | Gyle | ☐ |
+| Implement `TransactionService` (transfer logic: debit, credit, create block) | Gyle | ☐ |
+| Implement `TransactionController` (`POST /api/transactions/transfer`, `GET /api/transactions`) | Gyle | ☐ |
+| Add balance validation (reject if insufficient funds) | Gyle | ☐ |
 | Ensure every transfer creates a new Block with proper hash chaining | Gyle | ☐ |
 | Wire `BlockchainService` into `TransactionService` | Gyle | ☐ |
-| Build Transfer page (form: recipient username, amount) | Kirsten | ☐ |
+| Build Transfer page (form: recipient username, amount) | Karl | ☐ |
 | Build Transaction History page (table of past transactions) | Kirsten | ☐ |
-| Add wallet balance display to Navbar or Dashboard | Kirsten | ☐ |
+| Add wallet balance display to Navbar or Dashboard | Karl | ☐ |
 | Test full transfer flow end-to-end (2 users, transfer, verify chain) | All | ☐ |
 
 **Day 3 Deliverable:** Users can transfer tokens. Every transfer is recorded as a block. Transaction history is visible. Chain verify detects any tampering.
@@ -89,10 +90,10 @@
 | Implement `MarketplaceController` (GET items, POST list, POST buy) | Gyle | ☐ |
 | Integrate purchase flow with `BlockchainService` (create block on purchase) | Gyle | ☐ |
 | Handle sold-out items (status = "Sold", prevent double-buy) | Gyle | ☐ |
-| Build Marketplace browse page (grid/list of items) | Kirsten | ☐ |
+| Build Marketplace browse page (grid/list of items) | Karl | ☐ |
 | Build List Item form (name, price) | Kirsten | ☐ |
 | Build Buy confirmation flow | Kirsten | ☐ |
-| Add "My Listings" section for sellers | Kirsten | ☐ |
+| Add "My Listings" section for sellers | Karl | ☐ |
 | Test marketplace flow end-to-end | All | ☐ |
 
 **Day 4 Deliverable:** Full marketplace works. Users can list, browse, and buy items. Purchases are recorded on the blockchain.
@@ -103,11 +104,11 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Integrate instructor-assigned external API (TBD) | Karl | ☐ |
-| Add external API data to Dashboard or transaction flow | Karl | ☐ |
+| Integrate instructor-assigned external API (TBD) | Gyle | ☐ |
+| Add external API data to Dashboard or transaction flow | Gyle | ☐ |
 | Final end-to-end testing of all flows | Gyle | ☐ |
 | Verify chain tamper-detection works (manually alter a block, re-verify) | Gyle | ☐ |
-| UI cleanup, loading states, error messages | Kirsten | ☐ |
+| UI cleanup, loading states, error messages | Karl | ☐ |
 | Responsive design pass (mobile-friendly) | Kirsten | ☐ |
 | Update README.md with final documentation | All | ☐ |
 | Demo preparation (talking points, test data) | All | ☐ |
@@ -121,13 +122,9 @@
 
 ```
 main (protected)
-├── feature/auth          (Karl)
-├── feature/blockchain    (Gyle)
-├── feature/wallet        (Karl)
-├── feature/transfers     (Karl)
-├── feature/marketplace   (Gyle)
-├── feature/frontend      (Kirsten)
-└── feature/external-api  (Karl)
+├── feature/backend        (Gyle)
+├── feature/frontend-1     (Karl)
+└── feature/frontend-2     (Kirsten)
 ```
 
 ### Rules
@@ -141,7 +138,7 @@ main (protected)
 
 ## API Contract (Agree Before Coding)
 
-Backend members (Gyle + Karl) should agree on these request/response shapes before Day 1 ends:
+Gyle publishes this contract. Karl and Kirsten stub frontend pages using these shapes before backend is live.
 
 ### POST /api/auth/register
 ```json
@@ -239,4 +236,4 @@ Backend members (Gyle + Karl) should agree on these request/response shapes befo
 - **Daily standup:** 10 min at start of session — what did you do, what will you do, any blockers
 - **Blockers:** Message group chat immediately, don't spin for more than 15 min
 - **PR reviews:** At least one other member must review before merge
-- **API changes:** Must notify team in group chat before changing any endpoint contract
+- **API changes:** Gyle notifies team in group chat before changing any endpoint contract

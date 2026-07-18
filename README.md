@@ -269,9 +269,9 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 | 7 | Buffer & Submission | Bug buffer, demo prep, final submission |
 
 **Team Split**
-- **Gyle (Backend Lead):** Blockchain core, hashing logic, chain verification, DB schema, marketplace backend
-- **Karl (Full-stack):** Auth system, wallet endpoints, transaction logic, Spring Boot config, external API
-- **Kirsten (Frontend Lead):** React app, all UI pages, API integration, styling, responsive design
+- **Gyle (Backend):** All Spring Boot code — auth, blockchain, wallet, transactions, marketplace, external API, DB schema
+- **Karl (Frontend):** React pages, login/register, dashboard, marketplace UI, transfer form
+- **Kirsten (Frontend):** React pages, auth context, transaction history, chain verify UI, styling
 
 ## Future Enhancements
 
