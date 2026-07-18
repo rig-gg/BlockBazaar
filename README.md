@@ -32,6 +32,21 @@ BlockBazaar is a school project that demonstrates core blockchain concepts — c
 
 ---
 
+## Documentation
+
+Detailed documentation lives in the [`docs/`](docs/) folder:
+
+| Document | Description |
+|----------|-------------|
+| [Project Architecture](docs/PROJECT_ARCHITECTURE.md) | Full system design, directory structure, ER diagram, design decisions |
+| [Sprint Plan](docs/SPRINT_PLAN.md) | Day-by-day task breakdown for 3 team members |
+| [API Reference](docs/API_REFERENCE.md) | Complete endpoint documentation with request/response examples |
+| [Database Schema](docs/DATABASE_SCHEMA.sql) | Ready-to-run SQL for PostgreSQL |
+| [Getting Started](docs/GETTING_STARTED.md) | Setup instructions for backend, frontend, and database |
+| [Contributing Guidelines](docs/CONTRIBUTING.md) | Git workflow, commit conventions, code standards |
+
+---
+
 ## Overview
 
 BlockBazaar is a marketplace application where users trade digital items using **MKT Tokens**, the platform's native marketplace token. Every transfer and purchase is recorded as a block in a self-built, SHA-256-hashed chain, persisted in a relational database, and can be independently re-verified at any time to prove the transaction history hasn't been altered.
@@ -241,7 +256,7 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 
 ## Development Timeline
 
-**Duration:** 1 week | **Team:** 2 members
+**Duration:** 1 week | **Team:** 3 members
 
 | Day | Focus | Deliverables |
 |---|---|---|
@@ -254,8 +269,9 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 | 7 | Buffer & Submission | Bug buffer, demo prep, final submission |
 
 **Team Split**
-- **Backend:** Auth, blockchain ledger logic, verify endpoint, transfer & purchase business logic
-- **Frontend:** React pages, external API integration, transaction history table, chain verification UI
+- **Gyle (Backend Lead):** Blockchain core, hashing logic, chain verification, DB schema, marketplace backend
+- **Karl (Full-stack):** Auth system, wallet endpoints, transaction logic, Spring Boot config, external API
+- **Kirsten (Frontend Lead):** React app, all UI pages, API integration, styling, responsive design
 
 ## Future Enhancements
 
