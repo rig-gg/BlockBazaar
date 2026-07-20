@@ -1,41 +1,38 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
 function Login() {
   // State: what the user has typed into each field
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { login } = useAuth();
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  // Redirect back to the page the user originally tried to visit
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // stop the browser from reloading the page
     setError("");
 
     // Basic validation before hitting the backend
-    if (!username.trim() || !password) {
+    if (!email.trim() || !password) {
       setError("Please fill in both fields.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        setError("Invalid username or password.");
-        return;
-      }
-
-      const data = await response.json();
-      // TODO (AuthContextttz):
-      console.log("Login success, token:", data.token);
-      alert("Login successful!");
+      const { data } = await api.post("/auth/login", { email, password });
+      login(data);          // store token + user in AuthContext / localStorage
+      navigate(from, { replace: true });
     } catch (err) {
-      setError("Cannot reach the server. Is the backend running?");
+      setError(err.message || "Invalid username or password.");
     } finally {
       setLoading(false);
     }
@@ -49,13 +46,13 @@ function Login() {
 
         {error && <p style={styles.error}>{error}</p>}
 
-        <label style={styles.label}>Username</label>
+        <label style={styles.label}>Email</label>
         <input
           style={styles.input}
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
         />
 
         <label style={styles.label}>Password</label>

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,11 +48,12 @@ function Register() {
         return;
       }
 
-      setSuccess("Account created! You can now log in.");
+      setSuccess("Account created! Redirecting to login...");
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       setError("Cannot reach the server. Is the backend running?");
     } finally {
