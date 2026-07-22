@@ -3,16 +3,9 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ChainVerify from "./pages/ChainVerify";
+import Dashboard from "./pages/Dashboard";
 
-// Placeholder for future protected pages
-function Dashboard() {
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center",
-      justifyContent: "center", background: "#1a1a2e", color: "#4fc3f7" }}>
-      <h1>Dashboard — coming soon</h1>
-    </div>
-  );
-}
 
 function App() {
   return (
@@ -29,6 +22,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chain-verify"
+            element={
+              <ProtectedRoute>
+                <ChainVerify />
               </ProtectedRoute>
             }
           />
