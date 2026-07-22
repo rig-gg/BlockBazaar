@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ChainVerify from "./pages/ChainVerify";
 import Dashboard from "./pages/Dashboard";
-
+import Marketplace from "./pages/Marketplace";
 
 function App() {
   return (
@@ -30,6 +30,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChainVerify />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <Marketplace />
               </ProtectedRoute>
             }
           />

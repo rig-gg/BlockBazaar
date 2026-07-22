@@ -24,7 +24,7 @@ const NAV_LINKS = [
   { to: "/dashboard",    label: "Dashboard",    icon: ICONS.dashboard },
   { to: "/chain-verify", label: "Chain Verify", icon: ICONS.chain     },
   { to: "/transfer",     label: "Transfer",     icon: ICONS.transfer,  soon: true },
-  { to: "/marketplace",  label: "Marketplace",  icon: ICONS.market,    soon: true },
+  { to: "/marketplace",  label: "Marketplace",  icon: ICONS.market },
 ];
 
 export default function Navbar() {

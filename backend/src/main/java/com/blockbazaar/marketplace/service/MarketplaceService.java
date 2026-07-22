@@ -31,15 +31,29 @@ public class MarketplaceService {
         List<Item> items = itemRepository.findByStatus("Available");
         List<ItemResponse> responses = new ArrayList<>();
         for (Item item : items) {
-            ItemResponse response = new ItemResponse();
-            response.setItemId(item.getItemId());
-            response.setName(item.getName());
-            response.setPrice(item.getPrice());
-            response.setSeller(item.getSeller().getUsername());
-            response.setStatus(item.getStatus());
-            responses.add(response);
+            responses.add(toResponse(item));
         }
         return responses;
+    }
+
+    public List<ItemResponse> getMyItems(Long userId) {
+        List<Item> items = itemRepository.findBySellerId(userId);
+        List<ItemResponse> responses = new ArrayList<>();
+        for (Item item : items) {
+            responses.add(toResponse(item));
+        }
+        return responses;
+    }
+
+    private ItemResponse toResponse(Item item) {
+        ItemResponse r = new ItemResponse();
+        r.setItemId(item.getItemId());
+        r.setName(item.getName());
+        r.setPrice(item.getPrice());
+        r.setSeller(item.getSeller().getUsername());
+        r.setStatus(item.getStatus());
+        r.setCreatedAt(item.getCreatedAt());
+        return r;
     }
 
     @Transactional
@@ -54,14 +68,7 @@ public class MarketplaceService {
                 .build();
         itemRepository.save(item);
 
-        ItemResponse response = new ItemResponse();
-        response.setItemId(item.getItemId());
-        response.setName(item.getName());
-        response.setPrice(item.getPrice());
-        response.setSeller(seller.getUsername());
-        response.setStatus(item.getStatus());
-
-        return response;
+        return toResponse(item);
     }
 
     @Transactional

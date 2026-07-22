@@ -151,7 +151,7 @@ const QUICK_ACTIONS = [
     icon: I.market,
     iconBg: "linear-gradient(135deg, #6a1b9a, #4a148c)",
     route: "/marketplace",
-    disabled: true,
+    disabled: false,
   },
   {
     id: "action-history",

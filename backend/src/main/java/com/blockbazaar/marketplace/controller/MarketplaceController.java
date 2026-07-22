@@ -27,6 +27,14 @@ public class MarketplaceController {
         return ResponseEntity.ok(Map.of("items", items));
     }
 
+    @GetMapping("/items/mine")
+    public ResponseEntity<Map<String, List<ItemResponse>>> getMyItems(
+            @RequestHeader("Authorization") String authHeader) {
+        Long userId = JwtAuthFilter.extractUserId(authHeader);
+        List<ItemResponse> items = marketplaceService.getMyItems(userId);
+        return ResponseEntity.ok(Map.of("items", items));
+    }
+
     @PostMapping("/items")
     public ResponseEntity<Map<String, Object>> listItem(
             @RequestHeader("Authorization") String authHeader,
