@@ -1,18 +1,16 @@
 import { useState } from "react";
 
 function Login() {
-  // State: what the user has typed into each field
-  const [username, setUsername] = useState("");
+  const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // stop the browser from reloading the page
+    e.preventDefault();
     setError("");
 
-    // Basic validation before hitting the backend
-    if (!username.trim() || !password) {
+    if (!loginIdentifier.trim() || !password) {
       setError("Please fill in both fields.");
       return;
     }
@@ -22,16 +20,16 @@ function Login() {
       const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ loginIdentifier, password }),
       });
 
       if (!response.ok) {
-        setError("Invalid username or password.");
+        setError("Invalid username/email or password.");
         return;
       }
 
       const data = await response.json();
-      // TODO (AuthContextttz):
+      // TODO (Kirsten's AuthContext will handle storing the JWT):
       console.log("Login success, token:", data.token);
       alert("Login successful!");
     } catch (err) {
@@ -49,13 +47,13 @@ function Login() {
 
         {error && <p style={styles.error}>{error}</p>}
 
-        <label style={styles.label}>Username</label>
+        <label style={styles.label}>Username or Email</label>
         <input
           style={styles.input}
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
+          value={loginIdentifier}
+          onChange={(e) => setLoginIdentifier(e.target.value)}
+          placeholder="Enter your username or email"
         />
 
         <label style={styles.label}>Password</label>
