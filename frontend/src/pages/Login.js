@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,8 +34,7 @@ function Login() {
       const data = await response.json();
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
-      console.log("Login success, token:", data.token);
-      alert("Login successful!");
+      navigate("/dashboard");
     } catch (err) {
       setError("Cannot reach the server. Is the backend running?");
     } finally {
@@ -147,7 +148,7 @@ const styles = {
     color: "#ffb3b3",
     padding: "0.5rem",
     borderRadius: "6px",
-    fontSize: "0.85rem",
+    fontSize: "0.85rem",  
     textAlign: "center",
     marginBottom: "1rem",
   },
