@@ -3,204 +3,24 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import api from "../services/api";
 
-// ─── Injected CSS / keyframes ──────────────────────────────────────────────────
-const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes shimmer {
-    0%   { background-position: -800px 0; }
-    100% { background-position:  800px 0; }
-  }
-  @keyframes modalSlide {
-    from { opacity: 0; transform: translateY(30px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0)   scale(1); }
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(79,195,247,0.4); }
-    50%       { box-shadow: 0 0 0 8px rgba(79,195,247,0); }
-  }
-
-  .mp-tab-btn {
-    padding: 0.5rem 1.4rem;
-    border-radius: 8px;
-    border: 1px solid rgba(79,195,247,0.15);
-    background: transparent;
-    color: #5a8aa0;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.18s, color 0.18s, border-color 0.18s;
-    font-family: 'Inter', system-ui, sans-serif;
-    letter-spacing: 0.02em;
-  }
-  .mp-tab-btn.active {
-    background: rgba(79,195,247,0.14);
-    border-color: rgba(79,195,247,0.4);
-    color: #4fc3f7;
-  }
-  .mp-tab-btn:hover:not(.active) {
-    background: rgba(79,195,247,0.07);
-    color: #8ab8d0;
-  }
-
-  .mp-item-card {
-    background: rgba(18,28,52,0.8);
-    border: 1px solid rgba(79,195,247,0.1);
-    border-radius: 16px;
-    padding: 1.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    animation: fadeUp 0.35s ease both;
-    backdrop-filter: blur(8px);
-  }
-  .mp-item-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-    border-color: rgba(79,195,247,0.25);
-  }
-
-  .mp-buy-btn {
-    width: 100%;
-    padding: 0.6rem;
-    border-radius: 9px;
-    border: none;
-    background: linear-gradient(135deg, #6a1b9a, #4a148c);
-    color: #e0c0ff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.18s, transform 0.18s, box-shadow 0.18s;
-    font-family: 'Inter', system-ui, sans-serif;
-    letter-spacing: 0.03em;
-    margin-top: auto;
-  }
-  .mp-buy-btn:hover:not(:disabled) {
-    opacity: 0.9;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(106,27,154,0.5);
-  }
-  .mp-buy-btn:disabled {
-    opacity: 0.38;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .mp-list-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.55rem 1.2rem;
-    border-radius: 9px;
-    border: none;
-    background: linear-gradient(135deg, #6a1b9a, #4a148c);
-    color: #e0c0ff;
-    font-size: 0.88rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.18s, box-shadow 0.18s;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  .mp-list-btn:hover {
-    opacity: 0.88;
-    box-shadow: 0 4px 16px rgba(106,27,154,0.45);
-  }
-
-  .mp-input {
-    width: 100%;
-    padding: 0.65rem 0.9rem;
-    border-radius: 8px;
-    border: 1px solid rgba(79,195,247,0.2);
-    background: rgba(10,20,45,0.7);
-    color: #ddeeff;
-    font-size: 0.92rem;
-    font-family: 'Inter', system-ui, sans-serif;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    box-sizing: border-box;
-  }
-  .mp-input:focus {
-    border-color: rgba(79,195,247,0.5);
-    box-shadow: 0 0 0 3px rgba(79,195,247,0.1);
-  }
-  .mp-input::placeholder { color: #3a5a74; }
-
-  .mp-confirm-btn {
-    flex: 1;
-    padding: 0.65rem;
-    border-radius: 9px;
-    border: none;
-    background: linear-gradient(135deg, #6a1b9a, #4a148c);
-    color: #e0c0ff;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Inter', system-ui, sans-serif;
-    transition: opacity 0.18s;
-  }
-  .mp-confirm-btn:hover:not(:disabled) { opacity: 0.88; }
-  .mp-confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .mp-cancel-btn {
-    flex: 1;
-    padding: 0.65rem;
-    border-radius: 9px;
-    border: 1px solid rgba(79,195,247,0.2);
-    background: transparent;
-    color: #5a8aa0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Inter', system-ui, sans-serif;
-    transition: background 0.18s, color 0.18s;
-  }
-  .mp-cancel-btn:hover { background: rgba(79,195,247,0.07); color: #8ab8d0; }
-
-  .mp-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 999px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .mp-status-available {
-    background: rgba(79,195,247,0.12);
-    color: #4fc3f7;
-    border: 1px solid rgba(79,195,247,0.25);
-  }
-  .mp-status-sold {
-    background: rgba(120,120,140,0.12);
-    color: #6a7a8a;
-    border: 1px solid rgba(120,120,140,0.2);
-  }
-`;
-
-// ─── Icons ─────────────────────────────────────────────────────────────────────
 function Icon({ d, size = 18, color = "currentColor", strokeWidth = 2 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d={d} />
     </svg>
   );
 }
-const I = {
+
+const ICONS = {
   market:  "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z M3 6h18 M16 10a4 4 0 0 1-8 0",
   plus:    "M12 5v14 M5 12h14",
   tag:     "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z M7 7h.01",
@@ -212,85 +32,74 @@ const I = {
   spin:    "M23 4v6h-6 M1 20v-6h6 M3.51 9a9 9 0 0 1 14.85-3.36L23 10 M1 14l4.64 4.36A9 9 0 0 0 20.49 15",
   alert:   "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01",
   bag:     "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z M3 6h18",
+  search:  "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
 };
 
-// ─── Skeleton card ─────────────────────────────────────────────────────────────
-function SkeletonCard() {
-  const shimmer = {
-    background: "linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%)",
-    backgroundSize: "800px 100%",
-    animation: "shimmer 1.6s infinite linear",
-    borderRadius: 6,
-  };
-  return (
-    <div style={{ background: "rgba(18,28,52,0.6)", border: "1px solid rgba(79,195,247,0.07)", borderRadius: 16, padding: "1.4rem", display: "flex", flexDirection: "column", gap: "0.7rem" }}>
-      <div style={{ ...shimmer, height: 14, width: "60%" }} />
-      <div style={{ ...shimmer, height: 11, width: "40%" }} />
-      <div style={{ ...shimmer, height: 28, width: "50%", marginTop: 4 }} />
-      <div style={{ ...shimmer, height: 36, marginTop: 4 }} />
-    </div>
-  );
-}
-
-// ─── List Item Modal ────────────────────────────────────────────────────────────
 function ListItemModal({ onClose, onSuccess }) {
-  const [name, setName]       = useState("");
-  const [price, setPrice]     = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!name.trim()) { setError("Item name is required."); return; }
+    if (!name.trim()) {
+      setError("Item name is required.");
+      return;
+    }
     const p = parseFloat(price);
-    if (isNaN(p) || p < 0.01) { setError("Price must be at least 0.01 BBZ."); return; }
+    if (isNaN(p) || p < 0.01) {
+      setError("Price must be at least 0.01 MKT.");
+      return;
+    }
 
     setLoading(true);
     try {
       await api.post("/marketplace/items", { name: name.trim(), price: p });
       onSuccess();
     } catch (err) {
-      setError(err.message || "Failed to list item.");
+      setError(err.response?.data?.message || err.message || "Failed to list item.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={ms.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div style={ms.modal}>
-        <div style={ms.modalHeader}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-            <div style={{ ...ms.iconWrap, background: "linear-gradient(135deg,#6a1b9a,#4a148c)" }}>
-              <Icon d={I.tag} size={16} color="#e0c0ff" />
+    <div style={modalStyles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="glass-card animate-scale-in" style={modalStyles.modal}>
+        <div style={modalStyles.header}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+            <div style={modalStyles.iconWrap}>
+              <Icon d={ICONS.tag} size={18} color="#38BDF8" />
             </div>
-            <h2 style={ms.modalTitle}>List an Item</h2>
+            <h2 style={modalStyles.title}>Create New Listing</h2>
           </div>
-          <button style={ms.closeBtn} onClick={onClose} id="modal-list-close">
-            <Icon d={I.x} size={16} />
+          <button style={modalStyles.closeBtn} onClick={onClose} id="modal-list-close">
+            <Icon d={ICONS.x} size={16} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+        <form onSubmit={handleSubmit} style={modalStyles.form}>
           <div>
-            <label style={ms.label}>Item Name</label>
+            <label style={modalStyles.label}>Item Title</label>
             <input
               id="input-item-name"
-              className="mp-input"
-              placeholder="e.g. Rare Digital Card"
+              className="bb-input"
+              placeholder="e.g. Genesis Cyber Pass #042"
               value={name}
               onChange={(e) => setName(e.target.value)}
               maxLength={100}
               autoFocus
             />
-            <div style={ms.hint}>{name.length}/100 characters</div>
+            <div style={modalStyles.hint}>{name.length}/100 characters</div>
           </div>
+
           <div>
-            <label style={ms.label}>Price (BBZ)</label>
+            <label style={modalStyles.label}>Price (MKT)</label>
             <input
               id="input-item-price"
-              className="mp-input"
+              className="bb-input"
               type="number"
               placeholder="0.00"
               min="0.01"
@@ -301,20 +110,18 @@ function ListItemModal({ onClose, onSuccess }) {
           </div>
 
           {error && (
-            <div style={ms.errorBox}>
-              <Icon d={I.alert} size={15} color="#ff8080" />
+            <div style={modalStyles.errorBox}>
+              <Icon d={ICONS.alert} size={16} color="#FB7185" />
               <span>{error}</span>
             </div>
           )}
 
-          <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.3rem" }}>
-            <button type="button" className="mp-cancel-btn" onClick={onClose} id="modal-list-cancel">Cancel</button>
-            <button type="submit" className="mp-confirm-btn" disabled={loading} id="modal-list-submit">
-              {loading ? (
-                <span style={{ display: "inline-block", animation: "spin 0.8s linear infinite" }}>
-                  <Icon d={I.spin} size={15} />
-                </span>
-              ) : "List Item →"}
+          <div style={{ display: "flex", gap: "0.8rem", marginTop: "0.5rem" }}>
+            <button type="button" className="bb-btn bb-btn-outline" onClick={onClose} style={{ flex: 1 }} id="modal-list-cancel">
+              Cancel
+            </button>
+            <button type="submit" className="bb-btn bb-btn-emerald" disabled={loading} style={{ flex: 1 }} id="modal-list-submit">
+              {loading ? "Publishing..." : "List Item"}
             </button>
           </div>
         </form>
@@ -323,11 +130,10 @@ function ListItemModal({ onClose, onSuccess }) {
   );
 }
 
-// ─── Buy Confirmation Modal ────────────────────────────────────────────────────
 function BuyModal({ item, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
-  const [result, setResult]   = useState(null);
+  const [error, setError] = useState("");
+  const [result, setResult] = useState(null);
 
   const handleBuy = async () => {
     setError("");
@@ -336,7 +142,7 @@ function BuyModal({ item, onClose, onSuccess }) {
       const { data } = await api.post(`/marketplace/items/${item.itemId}/buy`);
       setResult(data);
     } catch (err) {
-      setError(err.message || "Purchase failed.");
+      setError(err.response?.data?.message || err.message || "Purchase failed.");
     } finally {
       setLoading(false);
     }
@@ -348,87 +154,88 @@ function BuyModal({ item, onClose, onSuccess }) {
   };
 
   return (
-    <div style={ms.overlay} onClick={(e) => !result && e.target === e.currentTarget && onClose()}>
-      <div style={ms.modal}>
+    <div style={modalStyles.overlay} onClick={(e) => !result && e.target === e.currentTarget && onClose()}>
+      <div className="glass-card animate-scale-in" style={modalStyles.modal}>
         {result ? (
-          // ── Success state ──
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.2rem", padding: "0.5rem 0" }}>
-            <div style={{ width: 56, height: 56, borderRadius: "50%", background: "linear-gradient(135deg,#1b5e20,#2e7d32)", display: "flex", alignItems: "center", justifyContent: "center", animation: "pulse 1.5s ease 1" }}>
-              <Icon d={I.check} size={26} color="#66bb6a" strokeWidth={3} />
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.2rem", textAlign: "center" }}>
+            <div style={modalStyles.successIconCircle}>
+              <Icon d={ICONS.check} size={30} color="#34D399" strokeWidth={3} />
             </div>
-            <div style={{ textAlign: "center" }}>
-              <h2 style={{ ...ms.modalTitle, margin: "0 0 0.3rem" }}>Purchase Successful!</h2>
-              <p style={{ color: "#5a8aa0", fontSize: "0.88rem", margin: 0 }}>
-                <strong style={{ color: "#c0d8f0" }}>{result.itemName}</strong> is now yours.
+            <div>
+              <h2 style={{ fontSize: "1.35rem", fontWeight: "700", color: "#F8FAFC" }}>Purchase Confirmed!</h2>
+              <p style={{ color: "#94A3B8", fontSize: "0.88rem", marginTop: "0.3rem" }}>
+                You have successfully acquired <strong style={{ color: "#38BDF8" }}>{result.itemName}</strong>.
               </p>
             </div>
-            <div style={ms.proofBox}>
-              <div style={ms.proofLabel}>
-                <Icon d={I.link} size={13} color="#4fc3f7" />
-                <span>Blockchain Proof</span>
+
+            <div style={modalStyles.proofBox}>
+              <div style={modalStyles.proofHeader}>
+                <Icon d={ICONS.link} size={14} color="#38BDF8" />
+                <span>On-Chain Transaction Proof</span>
               </div>
-              <code style={ms.proofHash}>{result.blockHash}</code>
+              <code style={modalStyles.proofHash}>{result.blockHash}</code>
             </div>
-            <div style={{ display: "flex", gap: "0.5rem", width: "100%", fontSize: "0.85rem" }}>
-              <div style={{ flex: 1, textAlign: "center", background: "rgba(79,195,247,0.06)", borderRadius: 8, padding: "0.6rem" }}>
-                <div style={{ color: "#4fc3f7", fontWeight: 700 }}>{Number(result.newBalance).toFixed(2)} BBZ</div>
-                <div style={{ color: "#3a5a74", fontSize: "0.75rem" }}>New Balance</div>
+
+            <div style={{ width: "100%", padding: "0.8rem", background: "rgba(56, 189, 248, 0.08)", borderRadius: "10px", border: "1px solid rgba(56, 189, 248, 0.2)" }}>
+              <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>Updated Balance</div>
+              <div style={{ fontSize: "1.3rem", fontWeight: "700", color: "#34D399", fontFamily: "var(--font-heading)" }}>
+                {Number(result.newBalance).toFixed(2)} MKT
               </div>
             </div>
-            <button className="mp-confirm-btn" onClick={handleDone} id="modal-buy-done" style={{ width: "100%" }}>Done</button>
+
+            <button className="bb-btn bb-btn-primary" onClick={handleDone} style={{ width: "100%" }} id="modal-buy-done">
+              Complete
+            </button>
           </div>
         ) : (
-          // ── Confirmation state ──
           <>
-            <div style={ms.modalHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                <div style={{ ...ms.iconWrap, background: "linear-gradient(135deg,#6a1b9a,#4a148c)" }}>
-                  <Icon d={I.bag} size={16} color="#e0c0ff" />
+            <div style={modalStyles.header}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <div style={modalStyles.iconWrap}>
+                  <Icon d={ICONS.bag} size={18} color="#818CF8" />
                 </div>
-                <h2 style={ms.modalTitle}>Confirm Purchase</h2>
+                <h2 style={modalStyles.title}>Confirm Purchase</h2>
               </div>
-              <button style={ms.closeBtn} onClick={onClose} id="modal-buy-close">
-                <Icon d={I.x} size={16} />
+              <button style={modalStyles.closeBtn} onClick={onClose} id="modal-buy-close">
+                <Icon d={ICONS.x} size={16} />
               </button>
             </div>
 
-            <div style={ms.confirmDetail}>
-              <div style={ms.confirmRow}>
-                <span style={ms.confirmKey}>Item</span>
-                <span style={ms.confirmVal}>{item.name}</span>
+            <div style={modalStyles.confirmCard}>
+              <div style={modalStyles.confirmRow}>
+                <span style={modalStyles.confirmLabel}>Item Title</span>
+                <span style={modalStyles.confirmValue}>{item.name}</span>
               </div>
-              <div style={ms.confirmRow}>
-                <span style={ms.confirmKey}>Seller</span>
-                <span style={ms.confirmVal}>{item.seller}</span>
+              <div style={modalStyles.confirmRow}>
+                <span style={modalStyles.confirmLabel}>Seller</span>
+                <span style={modalStyles.confirmValue}>@{item.seller}</span>
               </div>
-              <div style={{ ...ms.confirmRow, borderTop: "1px solid rgba(79,195,247,0.1)", marginTop: 4, paddingTop: 12 }}>
-                <span style={ms.confirmKey}>You Pay</span>
-                <span style={{ ...ms.confirmVal, color: "#b39ddb", fontWeight: 800, fontSize: "1.15rem" }}>
-                  {Number(item.price).toFixed(2)} <span style={{ fontSize: "0.8rem", opacity: 0.7 }}>BBZ</span>
+              <div style={{ ...modalStyles.confirmRow, borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "0.8rem", marginTop: "0.4rem" }}>
+                <span style={modalStyles.confirmLabel}>Total Amount</span>
+                <span style={{ fontSize: "1.25rem", fontWeight: "700", color: "#38BDF8", fontFamily: "var(--font-heading)" }}>
+                  {Number(item.price).toFixed(2)} MKT
                 </span>
               </div>
             </div>
 
-            <div style={ms.warnBox}>
-              <Icon d={I.alert} size={14} color="#ffa726" />
-              <span>This will deduct <strong>{Number(item.price).toFixed(2)} BBZ</strong> from your wallet and be recorded on the blockchain.</span>
+            <div style={modalStyles.warnNote}>
+              <Icon d={ICONS.alert} size={15} color="#FBBF24" />
+              <span>Tokens will be transferred from your balance and recorded on-chain.</span>
             </div>
 
             {error && (
-              <div style={ms.errorBox}>
-                <Icon d={I.alert} size={15} color="#ff8080" />
+              <div style={modalStyles.errorBox}>
+                <Icon d={ICONS.alert} size={16} color="#FB7185" />
                 <span>{error}</span>
               </div>
             )}
 
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-              <button className="mp-cancel-btn" onClick={onClose} id="modal-buy-cancel">Cancel</button>
-              <button className="mp-confirm-btn" onClick={handleBuy} disabled={loading} id="modal-buy-confirm">
-                {loading ? (
-                  <span style={{ display: "inline-block", animation: "spin 0.8s linear infinite" }}>
-                    <Icon d={I.spin} size={15} />
-                  </span>
-                ) : "Confirm Purchase"}
+            <div style={{ display: "flex", gap: "0.8rem", marginTop: "0.5rem" }}>
+              <button className="bb-btn bb-btn-outline" onClick={onClose} style={{ flex: 1 }} id="modal-buy-cancel">
+                Cancel
+              </button>
+              <button className="bb-btn bb-btn-primary" onClick={handleBuy} disabled={loading} style={{ flex: 1 }} id="modal-buy-confirm">
+                {loading ? "Processing..." : "Confirm & Pay"}
               </button>
             </div>
           </>
@@ -438,138 +245,48 @@ function BuyModal({ item, onClose, onSuccess }) {
   );
 }
 
-// ─── Item Card (Browse tab) ────────────────────────────────────────────────────
-function ItemCard({ item, currentUsername, onBuy, index }) {
-  const isOwn = item.seller === currentUsername;
-  const date  = item.createdAt
-    ? new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
-    : "";
-
-  return (
-    <div className="mp-item-card" style={{ animationDelay: `${index * 0.05}s` }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontWeight: 700, fontSize: "0.97rem", color: "#ddeeff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {item.name}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginTop: "0.25rem", color: "#4a6a84", fontSize: "0.78rem" }}>
-            <Icon d={I.user} size={12} />
-            <span>{item.seller}</span>
-            {isOwn && <span style={{ color: "#4fc3f7", fontSize: "0.7rem", background: "rgba(79,195,247,0.1)", padding: "0px 5px", borderRadius: 4 }}>you</span>}
-          </div>
-        </div>
-        {date && (
-          <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "#2a4060", fontSize: "0.72rem", flexShrink: 0, marginLeft: 8 }}>
-            <Icon d={I.clock} size={11} />
-            {date}
-          </div>
-        )}
-      </div>
-
-      <div style={{ marginTop: "0.3rem" }}>
-        <span style={{ fontSize: "1.5rem", fontWeight: 800, background: "linear-gradient(90deg,#b39ddb,#9c27b0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          {Number(item.price).toFixed(2)}
-        </span>
-        <span style={{ fontSize: "0.8rem", color: "#7a5a9a", fontWeight: 600, marginLeft: 5 }}>BBZ</span>
-      </div>
-
-      <button
-        className="mp-buy-btn"
-        onClick={() => onBuy(item)}
-        disabled={isOwn}
-        id={`btn-buy-${item.itemId}`}
-        title={isOwn ? "You cannot buy your own item" : `Buy ${item.name}`}
-      >
-        {isOwn ? "Your Listing" : "Buy Now"}
-      </button>
-    </div>
-  );
-}
-
-// ─── My Listing Card ──────────────────────────────────────────────────────────
-function MyListingCard({ item, index }) {
-  const isSold = item.status === "Sold";
-  const date   = item.createdAt
-    ? new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
-    : "";
-
-  return (
-    <div className="mp-item-card" style={{ animationDelay: `${index * 0.05}s`, opacity: isSold ? 0.75 : 1 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#ddeeff", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-          {item.name}
-        </div>
-        <span className={`mp-status-badge ${isSold ? "mp-status-sold" : "mp-status-available"}`}>
-          {isSold ? "Sold" : "Available"}
-        </span>
-      </div>
-      <div>
-        <span style={{ fontSize: "1.4rem", fontWeight: 800, background: isSold ? "none" : "linear-gradient(90deg,#b39ddb,#9c27b0)", WebkitBackgroundClip: isSold ? "unset" : "text", WebkitTextFillColor: isSold ? "#5a6a7a" : "transparent" }}>
-          {Number(item.price).toFixed(2)}
-        </span>
-        <span style={{ fontSize: "0.78rem", color: isSold ? "#3a4a5a" : "#7a5a9a", fontWeight: 600, marginLeft: 5 }}>BBZ</span>
-      </div>
-      {date && (
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "#2a4060", fontSize: "0.75rem" }}>
-          <Icon d={I.clock} size={12} />
-          Listed {date}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── Empty State ───────────────────────────────────────────────────────────────
-function EmptyState({ icon, title, sub }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", padding: "4rem 1rem", textAlign: "center" }}>
-      <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(106,27,154,0.1)", border: "1px dashed rgba(106,27,154,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Icon d={icon} size={28} color="#4a2070" />
-      </div>
-      <div>
-        <div style={{ color: "#3a5a74", fontWeight: 600, fontSize: "0.95rem" }}>{title}</div>
-        <div style={{ color: "#2a3a50", fontSize: "0.83rem", marginTop: "0.3rem" }}>{sub}</div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Main Page ─────────────────────────────────────────────────────────────────
 export default function Marketplace() {
   const { user } = useAuth();
 
-  const [tab, setTab]           = useState("browse");   // "browse" | "mine"
-  const [items, setItems]       = useState([]);
-  const [myItems, setMyItems]   = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState("");
+  const [tab, setTab] = useState("browse");
+  const [items, setItems] = useState([]);
+  const [myItems, setMyItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const [buyTarget, setBuyTarget]     = useState(null);   // item to buy
+  const [buyTarget, setBuyTarget] = useState(null);
   const [showListModal, setListModal] = useState(false);
 
   const fetchBrowse = useCallback(async () => {
-    setLoading(true); setError("");
+    setLoading(true);
+    setError("");
     try {
       const { data } = await api.get("/marketplace/items");
       setItems(data.items || []);
     } catch (err) {
-      setError(err.message || "Failed to load items.");
-    } finally { setLoading(false); }
+      setError(err.response?.data?.message || err.message || "Failed to load marketplace items.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const fetchMine = useCallback(async () => {
-    setLoading(true); setError("");
+    setLoading(true);
+    setError("");
     try {
       const { data } = await api.get("/marketplace/items/mine");
       setMyItems(data.items || []);
     } catch (err) {
-      setError(err.message || "Failed to load your listings.");
-    } finally { setLoading(false); }
+      setError(err.response?.data?.message || err.message || "Failed to load your listings.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     if (tab === "browse") fetchBrowse();
-    else                  fetchMine();
+    else fetchMine();
   }, [tab, fetchBrowse, fetchMine]);
 
   const handleBuySuccess = () => {
@@ -580,284 +297,371 @@ export default function Marketplace() {
   const handleListSuccess = () => {
     setListModal(false);
     if (tab === "mine") fetchMine();
-    else { setTab("mine"); }
+    else setTab("mine");
   };
 
-  const currentList = tab === "browse" ? items : myItems;
+  const rawList = tab === "browse" ? items : myItems;
+  const filteredList = rawList.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.seller.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div style={s.page}>
-      <style>{CSS}</style>
+    <div style={{ minHeight: "100vh" }}>
       <Navbar />
 
-      <main style={s.main}>
-
-        {/* ── Header ── */}
-        <div style={s.header}>
+      <main className="bb-container animate-fade-up">
+        {/* Header */}
+        <div style={styles.headerRow}>
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", marginBottom: "0.3rem" }}>
-              <div style={s.headerIcon}>
-                <Icon d={I.market} size={20} color="#b39ddb" />
-              </div>
-              <h1 style={s.title}>Marketplace</h1>
+            <div style={styles.badgeWrap}>
+              <span className="bb-badge bb-badge-cyan">Web3 Commerce</span>
             </div>
-            <p style={s.subtitle}>Browse and buy digital items with BBZ tokens. Every purchase is recorded on the blockchain.</p>
+            <h1 style={{ fontSize: "1.8rem", fontWeight: "700", marginTop: "0.4rem" }}>Marketplace</h1>
+            <p style={{ color: "#94A3B8", fontSize: "0.9rem", marginTop: "0.3rem" }}>
+              Discover digital assets listed by community members. Transactions execute securely via token consensus.
+            </p>
           </div>
-          <button className="mp-list-btn" onClick={() => setListModal(true)} id="btn-list-item">
-            <Icon d={I.plus} size={16} />
+
+          <button className="bb-btn bb-btn-primary" onClick={() => setListModal(true)} id="btn-list-item">
+            <Icon d={ICONS.plus} size={16} />
             List Item
           </button>
         </div>
 
-        {/* ── Tabs ── */}
-        <div style={s.tabRow}>
-          <button className={`mp-tab-btn ${tab === "browse" ? "active" : ""}`} onClick={() => setTab("browse")} id="tab-browse">
-            Browse Items {items.length > 0 && tab === "browse" && <span style={s.tabCount}>{items.length}</span>}
-          </button>
-          <button className={`mp-tab-btn ${tab === "mine" ? "active" : ""}`} onClick={() => setTab("mine")} id="tab-my-listings">
-            My Listings {myItems.length > 0 && tab === "mine" && <span style={s.tabCount}>{myItems.length}</span>}
-          </button>
+        {/* Toolbar: Search + Tabs */}
+        <div style={styles.toolbar}>
+          <div style={styles.tabGroup}>
+            <button
+              id="tab-browse"
+              onClick={() => setTab("browse")}
+              className={`bb-btn ${tab === "browse" ? "bb-btn-primary" : "bb-btn-outline"}`}
+              style={{ padding: "0.45rem 1.1rem", fontSize: "0.85rem" }}
+            >
+              Browse All ({items.length})
+            </button>
+            <button
+              id="tab-my-listings"
+              onClick={() => setTab("mine")}
+              className={`bb-btn ${tab === "mine" ? "bb-btn-primary" : "bb-btn-outline"}`}
+              style={{ padding: "0.45rem 1.1rem", fontSize: "0.85rem" }}
+            >
+              My Listings ({myItems.length})
+            </button>
+          </div>
+
+          <div style={styles.searchBox}>
+            <Icon d={ICONS.search} size={16} color="#94A3B8" />
+            <input
+              type="text"
+              className="bb-input"
+              placeholder="Search items or seller..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ paddingLeft: "2.4rem", height: "38px" }}
+            />
+          </div>
         </div>
 
-        {/* ── Content ── */}
+        {/* Content */}
         {loading ? (
-          <div style={s.grid}>
-            {[1,2,3,4,5,6].map(k => <SkeletonCard key={k} />)}
+          <div style={styles.grid}>
+            {[1, 2, 3, 4, 5, 6].map((k) => (
+              <div key={k} className="glass-card" style={{ height: "210px", padding: "1.5rem" }} />
+            ))}
           </div>
         ) : error ? (
-          <div style={s.errorCard}>
-            <Icon d={I.alert} size={18} color="#ff8080" />
+          <div className="glass-card" style={styles.errorCard}>
+            <Icon d={ICONS.alert} size={20} color="#FB7185" />
             <div>
-              <strong style={{ color: "#ff9999" }}>Could not load items</strong>
-              <p style={{ margin: "0.2rem 0 0", color: "#cc7070", fontSize: "0.88rem" }}>{error}</p>
+              <strong style={{ color: "#FB7185" }}>Failed to load items</strong>
+              <p style={{ color: "#94A3B8", fontSize: "0.85rem" }}>{error}</p>
             </div>
-            <button onClick={tab === "browse" ? fetchBrowse : fetchMine} style={{ marginLeft: "auto", padding: "0.35rem 0.9rem", borderRadius: 6, border: "1px solid rgba(255,100,100,0.3)", background: "transparent", color: "#cc7070", cursor: "pointer", fontSize: "0.83rem" }}>
+            <button onClick={tab === "browse" ? fetchBrowse : fetchMine} className="bb-btn bb-btn-outline" style={{ marginLeft: "auto" }}>
               Retry
             </button>
           </div>
-        ) : currentList.length === 0 ? (
-          tab === "browse" ? (
-            <EmptyState icon={I.market} title="No items available" sub="Be the first to list something for sale." />
-          ) : (
-            <EmptyState icon={I.tag} title="You haven't listed anything yet" sub={'Click \u201cList Item\u201d to sell something in the marketplace.'} />
-          )
+        ) : filteredList.length === 0 ? (
+          <div className="glass-card" style={styles.emptyCard}>
+            <div style={styles.emptyIconWrap}>
+              <Icon d={ICONS.market} size={30} color="#38BDF8" />
+            </div>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: "600" }}>
+              {searchQuery ? "No items match your search" : tab === "browse" ? "Marketplace is currently empty" : "You have no active listings"}
+            </h3>
+            <p style={{ color: "#94A3B8", fontSize: "0.85rem", maxWidth: "380px" }}>
+              {tab === "browse" ? "Be the first seller! Click 'List Item' to post an item." : "Create your first listing to sell items on BlockBazaar."}
+            </p>
+          </div>
         ) : (
-          <div style={s.grid}>
-            {tab === "browse"
-              ? currentList.map((item, i) => (
-                  <ItemCard
-                    key={item.itemId}
-                    item={item}
-                    currentUsername={user?.username}
-                    onBuy={setBuyTarget}
-                    index={i}
-                  />
-                ))
-              : currentList.map((item, i) => (
-                  <MyListingCard key={item.itemId} item={item} index={i} />
-                ))
-            }
+          <div style={styles.grid}>
+            {filteredList.map((item) => {
+              const isOwn = item.seller === user?.username;
+              const isSold = item.status === "Sold";
+              return (
+                <div key={item.itemId} className="glass-card glass-card-interactive" style={styles.itemCard}>
+                  <div style={styles.cardHeader}>
+                    <div>
+                      <h3 style={styles.itemTitle}>{item.name}</h3>
+                      <div style={styles.sellerRow}>
+                        <Icon d={ICONS.user} size={12} color="#94A3B8" />
+                        <span style={styles.sellerName}>@{item.seller}</span>
+                        {isOwn && <span className="bb-badge bb-badge-cyan">You</span>}
+                      </div>
+                    </div>
+                    {isSold && <span className="bb-badge bb-badge-rose">Sold</span>}
+                  </div>
+
+                  <div style={styles.priceRow}>
+                    <span style={styles.priceVal}>{Number(item.price).toFixed(2)}</span>
+                    <span style={styles.priceSymbol}>MKT</span>
+                  </div>
+
+                  {tab === "browse" ? (
+                    <button
+                      className="bb-btn bb-btn-primary"
+                      onClick={() => setBuyTarget(item)}
+                      disabled={isOwn || isSold}
+                      id={`btn-buy-${item.itemId}`}
+                      style={{ width: "100%", marginTop: "auto", padding: "0.6rem" }}
+                    >
+                      {isOwn ? "Your Item" : isSold ? "Sold Out" : "Buy Item"}
+                    </button>
+                  ) : (
+                    <div style={{ marginTop: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.8rem", color: "#64748B" }}>
+                      <span>Status: <strong style={{ color: isSold ? "#FB7185" : "#34D399" }}>{item.status || "Available"}</strong></span>
+                      <span>Item #{item.itemId}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </main>
 
-      {/* ── Modals ── */}
-      {showListModal && (
-        <ListItemModal
-          onClose={() => setListModal(false)}
-          onSuccess={handleListSuccess}
-        />
-      )}
-      {buyTarget && (
-        <BuyModal
-          item={buyTarget}
-          onClose={() => setBuyTarget(null)}
-          onSuccess={handleBuySuccess}
-        />
-      )}
+      {/* Modals */}
+      {showListModal && <ListItemModal onClose={() => setListModal(false)} onSuccess={handleListSuccess} />}
+      {buyTarget && <BuyModal item={buyTarget} onClose={() => setBuyTarget(null)} onSuccess={handleBuySuccess} />}
     </div>
   );
 }
 
-// ─── Page styles ───────────────────────────────────────────────────────────────
-const s = {
-  page: {
-    minHeight: "100vh",
-    background: "linear-gradient(160deg,#1a1a2e 0%,#0d1b35 100%)",
-    color: "#eee",
-    fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
+const styles = {
+  headerRow: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "1rem",
+    flexWrap: "wrap",
+    marginBottom: "1.8rem",
   },
-  main: {
-    maxWidth: 960,
-    margin: "0 auto",
-    padding: "2.2rem 1.5rem 4rem",
+  badgeWrap: {
+    display: "inline-block",
   },
-  header: {
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    flexWrap: "wrap",
+    marginBottom: "1.8rem",
+  },
+  tabGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  searchBox: {
+    position: "relative",
+    width: "280px",
+    display: "flex",
+    alignItems: "center",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+    gap: "1.25rem",
+  },
+  itemCard: {
+    padding: "1.5rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  cardHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: "1.8rem",
-    flexWrap: "wrap",
-    gap: "1rem",
-    animation: "fadeUp 0.35s ease",
+    gap: "0.5rem",
   },
-  headerIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    background: "linear-gradient(135deg,rgba(106,27,154,0.4),rgba(74,20,140,0.4))",
-    border: "1px solid rgba(179,157,219,0.2)",
+  itemTitle: {
+    fontSize: "1.05rem",
+    fontWeight: "700",
+    color: "#F8FAFC",
+  },
+  sellerRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.35rem",
+    marginTop: "0.25rem",
+  },
+  sellerName: {
+    fontSize: "0.8rem",
+    color: "#94A3B8",
+  },
+  priceRow: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: "0.35rem",
+  },
+  priceVal: {
+    fontFamily: "var(--font-heading)",
+    fontSize: "1.8rem",
+    fontWeight: "800",
+    color: "#38BDF8",
+  },
+  priceSymbol: {
+    fontSize: "0.85rem",
+    fontWeight: "600",
+    color: "#94A3B8",
+  },
+  errorCard: {
+    padding: "1.5rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+  },
+  emptyCard: {
+    padding: "3.5rem 1.5rem",
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.8rem",
+  },
+  emptyIconWrap: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    background: "rgba(56, 189, 248, 0.08)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
+
+const modalStyles = {
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 200,
+    background: "rgba(11, 15, 25, 0.75)",
+    backdropFilter: "blur(8px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "1.5rem",
+  },
+  modal: {
+    width: "100%",
+    maxWidth: "440px",
+    padding: "2rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.2rem",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  iconWrap: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "10px",
+    background: "rgba(56, 189, 248, 0.12)",
+    border: "1px solid rgba(56, 189, 248, 0.3)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
-    margin: 0,
-    fontSize: "1.65rem",
-    fontWeight: 800,
-    color: "#ddeeff",
-    letterSpacing: "-0.01em",
-  },
-  subtitle: {
-    margin: 0,
-    color: "#4a6a84",
-    fontSize: "0.88rem",
-    lineHeight: 1.5,
-    maxWidth: 520,
-  },
-  tabRow: {
-    display: "flex",
-    gap: "0.6rem",
-    marginBottom: "1.6rem",
-    animation: "fadeUp 0.4s ease",
-  },
-  tabCount: {
-    display: "inline-block",
-    background: "rgba(79,195,247,0.15)",
-    color: "#4fc3f7",
-    fontSize: "0.72rem",
-    padding: "0px 6px",
-    borderRadius: 999,
-    marginLeft: 5,
-    fontWeight: 700,
-    verticalAlign: "middle",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
-    gap: "1.1rem",
-  },
-  errorCard: {
-    display: "flex",
-    alignItems: "flex-start",
-    gap: "1rem",
-    background: "rgba(140,30,30,0.15)",
-    border: "1px solid rgba(255,100,100,0.3)",
-    borderRadius: 12,
-    padding: "1.2rem 1.5rem",
-    flexWrap: "wrap",
-  },
-};
-
-// ─── Modal styles ──────────────────────────────────────────────────────────────
-const ms = {
-  overlay: {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(5,10,25,0.75)",
-    backdropFilter: "blur(6px)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1000,
-    padding: "1rem",
-    animation: "fadeIn 0.2s ease",
-  },
-  modal: {
-    background: "linear-gradient(160deg,rgba(18,28,55,0.98) 0%,rgba(10,18,40,0.98) 100%)",
-    border: "1px solid rgba(79,195,247,0.18)",
-    borderRadius: 20,
-    padding: "1.8rem",
-    width: "100%",
-    maxWidth: 420,
-    boxShadow: "0 24px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(79,195,247,0.08)",
-    animation: "modalSlide 0.25s ease",
-    fontFamily: "'Inter', system-ui, sans-serif",
-  },
-  modalHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "1.4rem",
-  },
-  modalTitle: {
-    margin: 0,
-    fontSize: "1.05rem",
-    fontWeight: 700,
-    color: "#ddeeff",
-  },
-  iconWrap: {
-    width: 34,
-    height: 34,
-    borderRadius: 9,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    fontSize: "1.2rem",
+    fontWeight: "700",
   },
   closeBtn: {
-    background: "transparent",
+    background: "none",
     border: "none",
-    color: "#4a6a84",
+    color: "#94A3B8",
     cursor: "pointer",
-    padding: 4,
-    lineHeight: 0,
-    transition: "color 0.15s",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
   },
   label: {
+    fontSize: "0.85rem",
+    fontWeight: "600",
+    color: "#CBD5E1",
+    marginBottom: "0.35rem",
     display: "block",
-    fontSize: "0.8rem",
-    fontWeight: 600,
-    color: "#4a7a94",
-    marginBottom: "0.45rem",
-    letterSpacing: "0.05em",
-    textTransform: "uppercase",
   },
   hint: {
-    fontSize: "0.72rem",
-    color: "#2a4060",
-    marginTop: "0.3rem",
+    fontSize: "0.75rem",
+    color: "#64748B",
+    marginTop: "0.25rem",
     textAlign: "right",
   },
   errorBox: {
     display: "flex",
     alignItems: "center",
     gap: "0.5rem",
-    background: "rgba(140,30,30,0.2)",
-    border: "1px solid rgba(255,100,100,0.25)",
-    borderRadius: 8,
     padding: "0.65rem 0.9rem",
-    color: "#ff9090",
-    fontSize: "0.85rem",
-  },
-  warnBox: {
-    display: "flex",
-    alignItems: "flex-start",
-    gap: "0.5rem",
-    background: "rgba(255,167,38,0.08)",
-    border: "1px solid rgba(255,167,38,0.2)",
-    borderRadius: 8,
-    padding: "0.7rem 0.9rem",
-    color: "#c8a060",
+    background: "rgba(251, 113, 133, 0.12)",
+    border: "1px solid rgba(251, 113, 133, 0.3)",
+    borderRadius: "8px",
+    color: "#FB7185",
     fontSize: "0.82rem",
-    lineHeight: 1.5,
-    marginBottom: "0.6rem",
   },
-  confirmDetail: {
-    background: "rgba(10,20,45,0.5)",
-    border: "1px solid rgba(79,195,247,0.1)",
-    borderRadius: 10,
-    padding: "1rem 1.1rem",
-    marginBottom: "1rem",
+  successIconCircle: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    background: "rgba(52, 211, 153, 0.15)",
+    border: "1px solid rgba(52, 211, 153, 0.4)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  proofBox: {
+    width: "100%",
+    padding: "0.8rem",
+    background: "rgba(15, 23, 42, 0.8)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "10px",
+    textAlign: "left",
+  },
+  proofHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
+    fontSize: "0.75rem",
+    fontWeight: "600",
+    color: "#94A3B8",
+    marginBottom: "0.35rem",
+  },
+  proofHash: {
+    fontSize: "0.75rem",
+    color: "#38BDF8",
+    wordBreak: "break-all",
+  },
+  confirmCard: {
+    background: "rgba(15, 23, 42, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
+    borderRadius: "12px",
+    padding: "1rem",
     display: "flex",
     flexDirection: "column",
     gap: "0.6rem",
@@ -867,33 +671,23 @@ const ms = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-  confirmKey: { color: "#4a6a84", fontSize: "0.83rem" },
-  confirmVal: { color: "#c0d8f0", fontWeight: 600, fontSize: "0.9rem", textAlign: "right", maxWidth: "60%", wordBreak: "break-word" },
-  proofBox: {
-    background: "rgba(10,20,45,0.6)",
-    border: "1px solid rgba(79,195,247,0.12)",
-    borderRadius: 10,
-    padding: "0.9rem 1rem",
-    width: "100%",
+  confirmLabel: {
+    fontSize: "0.82rem",
+    color: "#94A3B8",
   },
-  proofLabel: {
+  confirmValue: {
+    fontSize: "0.9rem",
+    fontWeight: "600",
+    color: "#F8FAFC",
+  },
+  warnNote: {
     display: "flex",
     alignItems: "center",
-    gap: "0.4rem",
-    color: "#4a6a84",
-    fontSize: "0.75rem",
-    fontWeight: 600,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
-    marginBottom: "0.5rem",
-  },
-  proofHash: {
-    display: "block",
-    fontSize: "0.72rem",
-    color: "#4fc3f7",
-    wordBreak: "break-all",
-    fontFamily: "'Courier New', monospace",
-    lineHeight: 1.6,
-    opacity: 0.85,
+    gap: "0.5rem",
+    fontSize: "0.8rem",
+    color: "#FBBF24",
+    background: "rgba(251, 191, 36, 0.08)",
+    padding: "0.6rem 0.8rem",
+    borderRadius: "8px",
   },
 };
