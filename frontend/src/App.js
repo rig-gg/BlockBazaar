@@ -1,18 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-// Placeholder for future protected pages
-function Dashboard() {
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center",
-      justifyContent: "center", background: "#1a1a2e", color: "#4fc3f7" }}>
-      <h1>Dashboard — coming soon</h1>
-    </div>
-  );
-}
+import Dashboard from "./pages/Dashboard";
+import ChainVerify from "./pages/ChainVerify";
+import Transfer from "./pages/Transfer";
+import Marketplace from "./pages/Marketplace";
+import MyListings from "./pages/MyListings";
+import Transactions from "./pages/Transactions";
 
 function App() {
   return (
@@ -20,7 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
-          <Route path="/login"    element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
           {/* Protected routes */}
@@ -29,6 +27,46 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chain-verify"
+            element={
+              <ProtectedRoute>
+                <ChainVerify />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transfer"
+            element={
+              <ProtectedRoute>
+                <Transfer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <Marketplace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-listings"
+            element={
+              <ProtectedRoute>
+                <MyListings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <ProtectedRoute>
+                <Transactions />
               </ProtectedRoute>
             }
           />
