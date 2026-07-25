@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transfer from "./pages/Transfer";
 import Marketplace from "./pages/Marketplace";
+import MyListings from "./pages/MyListings";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transfer" element={<Transfer />} />
         <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/my-listings" element={<MyListings />} />
       </Routes>
     </BrowserRouter>
   );
