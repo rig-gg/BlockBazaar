@@ -7,6 +7,7 @@ function Transfer() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,7 +86,18 @@ function Transfer() {
             placeholder="Enter amount to send"
           />
 
-          <button style={styles.button} type="submit" disabled={loading}>
+          <button
+            style={{
+              ...styles.button,
+              ...(hovered && !loading ? styles.buttonHover : {}),
+              opacity: loading ? 0.6 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+            type="submit"
+            disabled={loading}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
             {loading ? "Sending..." : "Send"}
           </button>
         </form>
@@ -104,6 +116,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     padding: "3rem 1.5rem",
+    boxSizing: "border-box",
   },
   card: {
     background: "#16213e",
@@ -111,6 +124,7 @@ const styles = {
     borderRadius: "12px",
     width: "100%",
     maxWidth: "380px",
+    boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
     color: "#eee",
@@ -139,6 +153,10 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
     marginTop: "0.5rem",
+    transition: "background 0.15s ease",
+  },
+  buttonHover: {
+    background: "#7fd4fa",
   },
   error: {
     background: "#5c1a1a",

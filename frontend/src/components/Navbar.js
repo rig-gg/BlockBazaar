@@ -42,9 +42,11 @@ function Navbar() {
 const styles = {
   nav: {
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "1rem 2rem",
+    gap: "0.75rem",
+    padding: "1rem 1.5rem",
     background: "#16213e",
     color: "#eee",
   },
@@ -56,7 +58,8 @@ const styles = {
   },
   links: {
     display: "flex",
-    gap: "1.5rem",
+    flexWrap: "wrap",
+    gap: "1.25rem",
   },
   link: {
     textDecoration: "none",

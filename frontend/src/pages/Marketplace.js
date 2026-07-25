@@ -7,6 +7,7 @@ function Marketplace() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [buyingId, setBuyingId] = useState(null);
+  const [hoveredId, setHoveredId] = useState(null);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -95,9 +96,18 @@ function Marketplace() {
                 <h3 style={styles.itemName}>{item.name}</h3>
                 <p style={styles.itemPrice}>{item.price} MKT</p>
                 <button
-                  style={styles.button}
+                  style={{
+                    ...styles.button,
+                    ...(hoveredId === item.itemId && buyingId !== item.itemId
+                      ? styles.buttonHover
+                      : {}),
+                    opacity: buyingId === item.itemId ? 0.6 : 1,
+                    cursor: buyingId === item.itemId ? "not-allowed" : "pointer",
+                  }}
                   onClick={() => handleBuy(item)}
                   disabled={buyingId === item.itemId}
+                  onMouseEnter={() => setHoveredId(item.itemId)}
+                  onMouseLeave={() => setHoveredId(null)}
                 >
                   {buyingId === item.itemId ? "Buying..." : "Buy"}
                 </button>
@@ -180,6 +190,11 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
     width: "100%",
+    boxSizing: "border-box",
+    transition: "background 0.15s ease",
+  },
+  buttonHover: {
+    background: "#7fd4fa",
   },
 };
 
