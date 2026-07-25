@@ -133,7 +133,7 @@ const QUICK_ACTIONS = [
     icon: I.transfer,
     iconBg: "linear-gradient(135deg, #0288d1, #0050a0)",
     route: "/transfer",
-    disabled: true,
+    disabled: false,
   },
   {
     id: "action-chain-verify",
@@ -160,7 +160,7 @@ const QUICK_ACTIONS = [
     icon: I.history,
     iconBg: "linear-gradient(135deg, #e65100, #bf360c)",
     route: "/transactions",
-    disabled: true,
+    disabled: false,
   },
 ];
 

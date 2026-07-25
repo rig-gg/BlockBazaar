@@ -5,7 +5,7 @@ import api from "../services/api";
 
 function Login() {
   // State: what the user has typed into each field
-  const [email, setEmail] = useState("");
+  const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,14 +21,14 @@ function Login() {
     setError("");
 
     // Basic validation before hitting the backend
-    if (!email.trim() || !password) {
+    if (!loginIdentifier.trim() || !password) {
       setError("Please fill in both fields.");
       return;
     }
 
     setLoading(true);
     try {
-      const { data } = await api.post("/auth/login", { email, password });
+      const { data } = await api.post("/auth/login", { loginIdentifier, password });
       login(data);          // store token + user in AuthContext / localStorage
       navigate(from, { replace: true });
     } catch (err) {
@@ -46,13 +46,13 @@ function Login() {
 
         {error && <p style={styles.error}>{error}</p>}
 
-        <label style={styles.label}>Email</label>
+        <label style={styles.label}>Username or Email</label>
         <input
           style={styles.input}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
+          type="text"
+          value={loginIdentifier}
+          onChange={(e) => setLoginIdentifier(e.target.value)}
+          placeholder="Enter your username or email"
         />
 
         <label style={styles.label}>Password</label>

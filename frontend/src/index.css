@@ -11,3 +11,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ── Responsive Overrides ── */
+@media (max-width: 768px) {
+  /* Navbar adjustments */
+  nav {
+    height: auto !important;
+    padding: 0.8rem 1rem !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
+  }
+  .bb-nav-link {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.45rem !important;
+  }
+  
+  /* Main content padding */
+  main {
+    padding: 1.5rem 1rem 3rem !important;
+  }
+  
+  /* Text and balance sizing */
+  h1 {
+    font-size: 1.35rem !important;
+  }
+  #balance-display {
+    font-size: 2.3rem !important;
+  }
+  
+  /* Ensure modals and cards fit */
+  .mp-item-card {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Tighter tables for very small screens */
+  .tx-table th, .tx-table td {
+    padding: 0.6rem !important;
+    font-size: 0.75rem !important;
+  }
+  .tx-type-badge {
+    padding: 0.2rem 0.4rem !important;
+    font-size: 0.65rem !important;
+  }
+}

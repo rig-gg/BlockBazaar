@@ -6,6 +6,9 @@ import Register from "./pages/Register";
 import ChainVerify from "./pages/ChainVerify";
 import Dashboard from "./pages/Dashboard";
 import Marketplace from "./pages/Marketplace";
+import Transfer from "./pages/Transfer";
+import MyListings from "./pages/MyListings";
+import Transactions from "./pages/Transactions";
 
 function App() {
   return (
@@ -34,10 +37,34 @@ function App() {
             }
           />
           <Route
+            path="/transfer"
+            element={
+              <ProtectedRoute>
+                <Transfer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/marketplace"
             element={
               <ProtectedRoute>
                 <Marketplace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-listings"
+            element={
+              <ProtectedRoute>
+                <MyListings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <ProtectedRoute>
+                <Transactions />
               </ProtectedRoute>
             }
           />

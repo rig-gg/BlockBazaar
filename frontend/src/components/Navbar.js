@@ -23,7 +23,7 @@ const ICONS = {
 const NAV_LINKS = [
   { to: "/dashboard",    label: "Dashboard",    icon: ICONS.dashboard },
   { to: "/chain-verify", label: "Chain Verify", icon: ICONS.chain     },
-  { to: "/transfer",     label: "Transfer",     icon: ICONS.transfer,  soon: true },
+  { to: "/transfer",     label: "Transfer",     icon: ICONS.transfer  },
   { to: "/marketplace",  label: "Marketplace",  icon: ICONS.market },
 ];
 
