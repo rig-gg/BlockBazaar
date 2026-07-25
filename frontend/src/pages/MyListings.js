@@ -7,6 +7,7 @@ function MyListings() {
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +121,18 @@ function MyListings() {
             placeholder="Enter price"
           />
 
-          <button style={styles.button} type="submit" disabled={submitting}>
+          <button
+            style={{
+              ...styles.button,
+              ...(hovered && !submitting ? styles.buttonHover : {}),
+              opacity: submitting ? 0.6 : 1,
+              cursor: submitting ? "not-allowed" : "pointer",
+            }}
+            type="submit"
+            disabled={submitting}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
             {submitting ? "Listing..." : "List Item"}
           </button>
         </form>
@@ -197,6 +209,10 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
     marginTop: "0.5rem",
+    transition: "background 0.15s ease",
+  },
+  buttonHover: {
+    background: "#7fd4fa",
   },
   error: {
     background: "#5c1a1a",

@@ -6,6 +6,7 @@ function Dashboard() {
   const [balance, setBalance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [hoveredAction, setHoveredAction] = useState(null);
 
   useEffect(() => {
     const fetchWallet = async () => {
@@ -52,10 +53,26 @@ function Dashboard() {
         </div>
 
         <div style={styles.actions}>
-          <Link to="/transfer" style={styles.actionButton}>
+          <Link
+            to="/transfer"
+            style={{
+              ...styles.actionButton,
+              ...(hoveredAction === "transfer" ? styles.actionButtonHover : {}),
+            }}
+            onMouseEnter={() => setHoveredAction("transfer")}
+            onMouseLeave={() => setHoveredAction(null)}
+          >
             Transfer
           </Link>
-          <Link to="/marketplace" style={styles.actionButton}>
+          <Link
+            to="/marketplace"
+            style={{
+              ...styles.actionButton,
+              ...(hoveredAction === "marketplace" ? styles.actionButtonHover : {}),
+            }}
+            onMouseEnter={() => setHoveredAction("marketplace")}
+            onMouseLeave={() => setHoveredAction(null)}
+          >
             Marketplace
           </Link>
         </div>
@@ -82,6 +99,7 @@ const styles = {
     borderRadius: "12px",
     width: "100%",
     maxWidth: "420px",
+    boxSizing: "border-box",
     textAlign: "center",
   },
   cardTitle: {
@@ -107,17 +125,19 @@ const styles = {
     color: "#ffb3b3",
     padding: "0.5rem",
     borderRadius: "6px",
-    fontSize: "0.9rem",
+    fontSize: "0.85rem",
+    textAlign: "center",
   },
   actions: {
     display: "flex",
+    flexWrap: "wrap",
     gap: "1rem",
     marginTop: "2rem",
     width: "100%",
     maxWidth: "420px",
   },
   actionButton: {
-    flex: 1,
+    flex: "1 1 160px",
     textAlign: "center",
     padding: "0.7rem",
     borderRadius: "6px",
@@ -125,6 +145,10 @@ const styles = {
     color: "#000",
     fontWeight: "bold",
     textDecoration: "none",
+    transition: "background 0.15s ease",
+  },
+  actionButtonHover: {
+    background: "#7fd4fa",
   },
 };
 
