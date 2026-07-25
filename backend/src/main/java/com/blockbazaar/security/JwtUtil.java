@@ -52,10 +52,6 @@ public class JwtUtil {
         return Long.parseLong(parseToken(token).getSubject());
     }
 
-    public static String getUsernameFromToken(String token) {
-        return parseToken(token).get("username", String.class);
-    }
-
     public static boolean validateToken(String token) {
         try {
             parseToken(token);

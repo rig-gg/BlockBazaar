@@ -30,9 +30,9 @@
 | Create React project (`npx create-react-app frontend`) | Karl | ☐ |
 | Build React login page | Karl | ☐ |
 | Build React register page | Karl | ☐ |
-| Set up `AuthContext` for JWT token storage | Kirsten | ☐ |
-| Set up Axios API service with base URL | Kirsten | ☐ |
-| Set up `ProtectedRoute` component | Kirsten | ☐ |
+| Set up `AuthContext` for JWT token storage | Kirsten | [x] |
+| Set up Axios API service with base URL | Kirsten | [x] |
+| Set up `ProtectedRoute` component | Kirsten | [x] |
 | Create `.env.example` with all required variables | Gyle | ☐ |
 | Set up Git branching strategy (main + feature branches) | Gyle | ☐ |
 
@@ -54,7 +54,7 @@
 | Wire auth: extract user from JWT in all endpoints | Gyle | ☐ |
 | Build Dashboard page (show balance, quick actions) | Karl | ☐ |
 | Build Navbar component with navigation links | Karl | ☐ |
-| Build Chain Verification page (call `/api/chain/verify`, display result) | Kirsten | ☐ |
+| Build Chain Verification page (call `/api/chain/verify`, display result) | Kirsten | [x] |
 | Test auth + wallet endpoints with Postman/curl | Gyle | ☐ |
 
 **Day 2 Deliverable:** Blockchain hashing and verification works. Users can see their wallet balance. Chain verify returns integrity status.
@@ -72,7 +72,7 @@
 | Ensure every transfer creates a new Block with proper hash chaining | Gyle | ☐ |
 | Wire `BlockchainService` into `TransactionService` | Gyle | ☐ |
 | Build Transfer page (form: recipient username, amount) | Karl | ☐ |
-| Build Transaction History page (table of past transactions) | Kirsten | ☐ |
+| Build Transaction History page (table of past transactions) | Kirsten | [x] |
 | Add wallet balance display to Navbar or Dashboard | Karl | ☐ |
 | Test full transfer flow end-to-end (2 users, transfer, verify chain) | All | ☐ |
 
@@ -91,8 +91,8 @@
 | Integrate purchase flow with `BlockchainService` (create block on purchase) | Gyle | ☐ |
 | Handle sold-out items (status = "Sold", prevent double-buy) | Gyle | ☐ |
 | Build Marketplace browse page (grid/list of items) | Karl | ☐ |
-| Build List Item form (name, price) | Kirsten | ☐ |
-| Build Buy confirmation flow | Kirsten | ☐ |
+| Build List Item form (name, price) | Kirsten | [x] |
+| Build Buy confirmation flow | Kirsten | [x] |
 | Add "My Listings" section for sellers | Karl | ☐ |
 | Test marketplace flow end-to-end | All | ☐ |
 
@@ -109,7 +109,7 @@
 | Final end-to-end testing of all flows | Gyle | ☐ |
 | Verify chain tamper-detection works (manually alter a block, re-verify) | Gyle | ☐ |
 | UI cleanup, loading states, error messages | Karl | ☐ |
-| Responsive design pass (mobile-friendly) | Kirsten | ☐ |
+| Responsive design pass (mobile-friendly) | Kirsten | [x] |
 | Update README.md with final documentation | All | ☐ |
 | Demo preparation (talking points, test data) | All | ☐ |
 | Bug fixes and final polish | All | ☐ |

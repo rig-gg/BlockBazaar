@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
 import ChainVerify from "./pages/ChainVerify";
-import Transfer from "./pages/Transfer";
+import Dashboard from "./pages/Dashboard";
 import Marketplace from "./pages/Marketplace";
+import Transfer from "./pages/Transfer";
 import MyListings from "./pages/MyListings";
 import Transactions from "./pages/Transactions";
 
@@ -18,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />
 
           {/* Protected routes */}
