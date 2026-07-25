@@ -30,7 +30,7 @@ function Login() {
 
       const data = await response.json();
       localStorage.setItem("token", data.token);
-      // TODO (Kirsten's AuthContext will handle storing the JWT):
+      localStorage.setItem("username", data.username);
       console.log("Login success, token:", data.token);
       alert("Login successful!");
     } catch (err) {
