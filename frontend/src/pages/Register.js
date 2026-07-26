@@ -4,21 +4,21 @@ import api from "../services/api";
 import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
 import Alert from "../components/Alert";
+import { useToast } from "../context/ToastContext";
 
 function Register() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     if (!username.trim() || !email.trim() || !password || !confirmPassword) {
       setError("Please fill in all required fields.");
@@ -45,7 +45,7 @@ function Register() {
         password,
       });
 
-      setSuccess("Account created successfully! Redirecting to login...");
+      toast.success("Account created successfully! Redirecting to login...");
       setUsername("");
       setEmail("");
       setPassword("");
@@ -77,8 +77,6 @@ function Register() {
         </div>
 
         {error && <Alert type="error">{error}</Alert>}
-
-        {success && <Alert type="success">{success}</Alert>}
 
         <form onSubmit={handleSubmit} className="bb-auth-form">
           <div className="bb-auth-input-group">

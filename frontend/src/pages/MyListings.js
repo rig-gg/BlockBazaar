@@ -5,13 +5,14 @@ import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
 import PageLayout from "../components/PageLayout";
 import Alert from "../components/Alert";
+import { useToast } from "../context/ToastContext";
 
 export default function MyListings() {
   const { user } = useAuth();
+  const toast = useToast();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [formError, setFormError] = useState("");
-  const [formSuccess, setFormSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const [listings, setListings] = useState([]);
@@ -42,7 +43,6 @@ export default function MyListings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-    setFormSuccess("");
 
     if (!name.trim()) {
       setFormError("Please enter an item title.");
@@ -57,7 +57,7 @@ export default function MyListings() {
     setSubmitting(true);
     try {
       await api.post("/marketplace/items", { name: name.trim(), price: numericPrice });
-      setFormSuccess("Item successfully listed on BlockBazaar!");
+      toast.success("Item successfully listed on BlockBazaar!");
       setName("");
       setPrice("");
       fetchListings();
@@ -90,8 +90,6 @@ export default function MyListings() {
           </div>
 
           {formError && <Alert type="error" icon={ICONS.alert} iconSize={16}>{formError}</Alert>}
-
-          {formSuccess && <Alert type="success" iconSize={16}>{formSuccess}</Alert>}
 
           <form onSubmit={handleSubmit} style={styles.form}>
             <div>
