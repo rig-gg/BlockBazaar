@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import Icon from "../components/Icon";
+import ICONS from "../constants/icons";
 
 function Register() {
   const navigate = useNavigate();
@@ -68,12 +69,7 @@ function Register() {
         {/* Brand Header */}
         <div style={styles.header}>
           <div style={styles.logoBadge}>
-            <Icon size={24} strokeWidth={2.5}>
-              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="8.5" cy="7" r="4" />
-              <line x1="20" y1="8" x2="20" y2="14" />
-              <line x1="23" y1="11" x2="17" y2="11" />
-            </Icon>
+            <Icon d={ICONS.userPlus} size={24} strokeWidth={2.5} />
           </div>
           <h1 style={styles.title}>Create Account</h1>
           <p style={styles.subtitle}>Join BlockBazaar to trade, transfer tokens, and verify block hashes.</p>
@@ -81,20 +77,14 @@ function Register() {
 
         {error && (
           <div style={styles.errorAlert} className="animate-scale-in">
-            <Icon size={18}>
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </Icon>
+            <Icon d={ICONS.alertCircle} size={18} />
             <span>{error}</span>
           </div>
         )}
 
         {success && (
           <div style={styles.successAlert} className="animate-scale-in">
-            <Icon size={18}>
-              <polyline points="20 6 9 17 4 12" />
-            </Icon>
+            <Icon d={ICONS.check} size={18} />
             <span>{success}</span>
           </div>
         )}
@@ -165,7 +155,7 @@ function Register() {
             {loading ? (
               <>
                 <Icon
-                  d="M21 12a9 9 0 11-6.219-8.56"
+                  d={ICONS.spinner}
                   size={18}
                   style={{ animation: "spin 1s linear infinite" }}
                 />
