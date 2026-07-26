@@ -9,6 +9,24 @@ Authorization: Bearer <JWT_TOKEN>
 
 ---
 
+## Error Response Format
+
+All errors return a consistent JSON structure:
+```json
+{ "message": "Description of what went wrong" }
+```
+
+| Status | Meaning |
+|--------|---------|
+| 400 | Bad Request (validation errors, insufficient balance) |
+| 401 | Unauthorized (missing/invalid JWT) |
+| 403 | Forbidden (authenticated but not allowed) |
+| 404 | Not Found (user, wallet, item, transaction) |
+| 409 | Conflict (duplicate email/username) |
+| 500 | Internal Server Error (unexpected failures) |
+
+---
+
 ## Authentication Endpoints
 
 ### POST /api/auth/register
@@ -36,19 +54,20 @@ Register a new user. Automatically creates a wallet with 100 MKT tokens.
 **Errors:**
 | Status | Message |
 |--------|---------|
-| 400 | Username or email already exists |
-| 400 | Missing required fields |
+| 409 | Email already exists |
+| 409 | Username already exists |
+| 400 | Missing required fields / validation error |
 
 ---
 
 ### POST /api/auth/login
 
-Authenticate and receive a JWT token.
+Authenticate and receive a JWT token. Accepts either email or username as `loginIdentifier`.
 
 **Request:**
 ```json
 {
-  "email": "alice@example.com",
+  "loginIdentifier": "alice@example.com",
   "password": "securepass123"
 }
 ```
@@ -65,7 +84,7 @@ Authenticate and receive a JWT token.
 **Errors:**
 | Status | Message |
 |--------|---------|
-| 401 | Invalid email or password |
+| 401 | Invalid credentials |
 
 ---
 
@@ -123,7 +142,8 @@ Transfer MKT tokens to another user.
 | Status | Message |
 |--------|---------|
 | 400 | Insufficient balance |
-| 400 | Cannot transfer to yourself |
+| 403 | Cannot transfer to yourself |
+| 404 | Sender not found |
 | 404 | Receiver not found |
 | 400 | Invalid amount (must be > 0) |
 
@@ -167,7 +187,7 @@ Get the authenticated user's transaction history.
 
 ### GET /api/chain/verify
 
-Recompute and verify the entire blockchain. No authentication required (for demo purposes).
+Recompute and verify the entire blockchain. No authentication required.
 
 **Response (200 OK) — Valid Chain:**
 ```json
@@ -194,7 +214,7 @@ Recompute and verify the entire blockchain. No authentication required (for demo
 
 ### GET /api/marketplace/items
 
-Browse all available marketplace listings.
+Browse all available marketplace listings. No authentication required.
 
 **Response (200 OK):**
 ```json
@@ -205,14 +225,32 @@ Browse all available marketplace listings.
       "name": "Digital Art #1",
       "price": 25.00,
       "seller": "alice",
-      "status": "Available"
-    },
+      "status": "Available",
+      "createdAt": "2025-07-18T12:00:00"
+    }
+  ]
+}
+```
+
+---
+
+### GET /api/marketplace/items/mine
+
+Get the authenticated user's own listings.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200 OK):**
+```json
+{
+  "items": [
     {
-      "itemId": 2,
-      "name": "Premium Skin",
-      "price": 50.00,
-      "seller": "bob",
-      "status": "Available"
+      "itemId": 1,
+      "name": "Digital Art #1",
+      "price": 25.00,
+      "seller": "alice",
+      "status": "Available",
+      "createdAt": "2025-07-18T12:00:00"
     }
   ]
 }
@@ -248,6 +286,7 @@ List a new item for sale.
 | Status | Message |
 |--------|---------|
 | 400 | Price must be greater than 0 |
+| 404 | User not found |
 
 ---
 
@@ -273,19 +312,77 @@ Purchase an item using MKT tokens.
 |--------|---------|
 | 400 | Insufficient balance |
 | 400 | Item already sold |
-| 400 | Cannot buy your own item |
+| 403 | Cannot buy your own item |
 | 404 | Item not found |
 
 ---
 
-## Common Error Format
+## Cardano Endpoints (Blockfrost)
 
-All errors follow this structure:
+### GET /api/cardano/network
+
+Get real-time Cardano mainnet network stats. No authentication required.
+
+**Response (200 OK):**
 ```json
 {
-  "error": "Description of what went wrong"
+  "network": "cardano-mainnet",
+  "latestBlock": {
+    "hash": "4ea1ba291e8eef538635a53e59fddba7810d1679631cc3aed7c8e6c4091a516a",
+    "height": 10482931,
+    "slot": 12345678,
+    "epoch": 523,
+    "time": "2025-07-18T12:00:00Z"
+  },
+  "supply": {
+    "total": "45000000000",
+    "circulating": "37500000000"
+  },
+  "health": true
 }
 ```
+
+**Response (200 OK) — API Unavailable:**
+```json
+{
+  "network": "cardano-mainnet",
+  "latestBlock": null,
+  "supply": null,
+  "health": false
+}
+```
+
+---
+
+### GET /api/cardano/tx/{hash}
+
+Look up any Cardano transaction by its hash. No authentication required.
+
+**Path Parameters:**
+| Parameter | Description |
+|-----------|-------------|
+| `hash` | 64-character hexadecimal transaction hash |
+
+**Response (200 OK):**
+```json
+{
+  "hash": "f1c24763f4ddca8a8b0dcc91ea76a1a9657cfe1615c72a459f5f370069a28874",
+  "block": 10482931,
+  "blockHeight": 10482931,
+  "index": 0,
+  "inputSum": "1500000",
+  "outputSum": "1497500",
+  "fee": "2500",
+  "inputCount": 1,
+  "outputCount": 2
+}
+```
+
+**Errors:**
+| Status | Message |
+|--------|---------|
+| 404 | Transaction not found: {hash} |
+| 500 | Failed to fetch transaction from Cardano network |
 
 ---
 
@@ -296,6 +393,6 @@ All errors follow this structure:
 2. Store token in localStorage (frontend)
 3. Attach to every request: Authorization: Bearer <token>
 4. Backend JwtAuthFilter validates token on every request
-5. If invalid → 401 Unauthorized
-6. If valid → request proceeds, user ID extracted from token
+5. If invalid → 401 Unauthorized (JSON response)
+6. If valid → request proceeds, user ID extracted from SecurityContext
 ```

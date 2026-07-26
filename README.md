@@ -90,8 +90,9 @@ The project demonstrates the interaction between three core layers:
 - Each block is SHA-256 hashed and linked to the previous block's hash
 - `/api/chain/verify` recomputes the chain and flags any tampering
 
-### External API Integration
-- Integration with an instructor-provided public API *(to be assigned)*
+### Cardano Network Integration
+- Real-time Cardano mainnet stats via Blockfrost API (latest block, epoch, slot, supply)
+- Cardano transaction lookup by hash
 
 ## System Architecture
 
@@ -103,27 +104,27 @@ The project demonstrates the interaction between three core layers:
                       |
                       v
                   Backend (Spring Boot)
-                /               \
-               v                 v
-          Database          External API
-       (PostgreSQL)      (instructor-assigned)
+                /       |       \
+               v        v        v
+          Database   Blockfrost   External
+       (PostgreSQL)  (Cardano)    APIs
             |
       Blocks table
     (the blockchain ledger)
 ```
 
-**Flow:** The frontend sends requests to the backend. The backend writes every transfer or purchase as a new hashed block, persists it to PostgreSQL, and can walk the full chain on demand to verify integrity. The instructor-assigned API is called for its designated purpose (e.g. data lookup, verification, or enrichment — details TBD once assigned).
+**Flow:** The frontend sends requests to the backend. The backend writes every transfer or purchase as a new hashed block, persists it to PostgreSQL, and can walk the full chain on demand to verify integrity. The Blockfrost API provides real-time Cardano blockchain data for network stats and transaction lookup.
 
 ## Tech Stack
 
 | Component | Technology |
 |---|---|
 | Frontend | ReactJS |
-| Backend | Spring Boot (Java) |
+| Backend | Spring Boot (Java 17) |
 | Database | PostgreSQL (Supabase) |
 | Hashing | SHA-256 (native chain implementation) |
-| External API | Instructor-assigned (TBD) |
-| Authentication | JWT |
+| External API | [Blockfrost](https://blockfrost.io) (Cardano Mainnet) |
+| Authentication | JWT (jjwt 0.12.6) |
 | Version Control | Git & GitHub |
 
 ## Database Schema
@@ -179,7 +180,14 @@ This chains every transaction to the one before it. Calling `GET /api/chain/veri
 
 | API | Purpose |
 |---|---|
-| *(Instructor-assigned, TBD)* | To be determined once assigned — integrated into the dashboard or transaction flow as appropriate |
+| [Blockfrost](https://blockfrost.io) | Cardano mainnet data — network stats and transaction lookup |
+
+### Blockfrost Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/cardano/network` | Cardano network stats (latest block, epoch, slot, supply, health) |
+| `GET` | `/api/cardano/tx/{hash}` | Look up any Cardano transaction by hash |
 
 ## The MKT Token
 
@@ -195,20 +203,21 @@ BlockBazaar uses its own marketplace token: **MKT Token**. MKT can be used for:
 - Java 17+ and Maven (backend)
 - Node.js 18+ and npm (frontend)
 - Supabase PostgreSQL project (or local PostgreSQL 15+)
+- [Blockfrost](https://blockfrost.io) project ID (free tier available)
 
 ### Installation
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-username>/blockbazaar.git
-cd blockbazaar
+git clone https://github.com/rig-gg/BlockBazaar.git
+cd BlockBazaar
 
 # 2. Set up the database
 # Run schema.sql as provided in /backend/src/main/resources
 
 # 3. Configure environment variables
-cp .env.example .env
-# Fill in: DB credentials, JWT secret, external API key (once assigned)
+cp backend/.env.example backend/.env
+# Fill in: DB credentials, JWT secret, Blockfrost project ID
 
 # 4. Start the backend
 cd backend
@@ -229,21 +238,43 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 | `DB_URL` | PostgreSQL connection string |
 | `DB_USER` / `DB_PASSWORD` | Database credentials |
 | `JWT_SECRET` | Secret key for signing JWTs |
-| `EXTERNAL_API_KEY` | API key for the instructor-assigned external API |
+| `JWT_EXPIRATION` | JWT token expiration in ms (default: 86400000) |
+| `BLOCKFROST_PROJECT_ID` | Blockfrost API project ID |
+| `BLOCKFROST_API_URL` | Blockfrost API base URL |
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/auth/register` | Register a new user (auto-creates a wallet) |
-| `POST` | `/api/auth/login` | Log in and receive a JWT |
-| `GET` | `/api/wallet` | View the user's wallet and balance |
-| `POST` | `/api/transactions/transfer` | Transfer tokens to another user |
-| `GET` | `/api/transactions` | View transaction history |
-| `GET` | `/api/chain/verify` | Recompute and verify the entire block chain |
-| `GET` | `/api/marketplace/items` | Browse marketplace listings |
-| `POST` | `/api/marketplace/items` | List an item for sale |
-| `POST` | `/api/marketplace/items/{id}/buy` | Purchase an item with MKT |
+### Auth
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | No | Register a new user (auto-creates a wallet) |
+| `POST` | `/api/auth/login` | No | Log in and receive a JWT |
+
+### Wallet & Transactions
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/wallet` | Yes | View the user's wallet and balance |
+| `POST` | `/api/transactions/transfer` | Yes | Transfer tokens to another user |
+| `GET` | `/api/transactions` | Yes | View transaction history |
+
+### Blockchain
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/chain/verify` | No | Recompute and verify the entire block chain |
+
+### Marketplace
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/marketplace/items` | No | Browse marketplace listings |
+| `GET` | `/api/marketplace/items/mine` | Yes | View your listed items |
+| `POST` | `/api/marketplace/items` | Yes | List an item for sale |
+| `POST` | `/api/marketplace/items/{id}/buy` | Yes | Purchase an item with MKT |
+
+### Cardano (Blockfrost)
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/cardano/network` | No | Cardano network stats |
+| `GET` | `/api/cardano/tx/{hash}` | No | Look up a Cardano transaction |
 
 ## User Stories
 
@@ -252,7 +283,8 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 - As a seller, I can list items for sale
 - As a user, I can view my transaction history
 - As a user, I can verify that the transaction ledger hasn't been tampered with
-- As a user, I benefit from data provided by the integrated external API
+- As a user, I can view real-time Cardano network stats
+- As a user, I can look up any Cardano transaction by hash
 
 ## Development Timeline
 
@@ -264,12 +296,12 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 | 2 | Blockchain Core | `blocks` table, SHA-256 hashing + chaining logic, `/api/chain/verify` endpoint |
 | 3 | Wallet & Transfers | Balance endpoint, token transfer endpoint, transfer UI |
 | 4 | Marketplace | Item listing, browse, and buy endpoints; marketplace UI |
-| 5 | External API & History | Instructor-assigned API integration, transaction history endpoint + UI, "Verify Chain" UI |
+| 5 | External API & History | Blockfrost (Cardano) integration, transaction history endpoint + UI, "Verify Chain" UI |
 | 6 | Integration & Polish | End-to-end testing, bug fixes, UI cleanup, documentation |
 | 7 | Buffer & Submission | Bug buffer, demo prep, final submission |
 
 **Team Split**
-- **Gyle (Backend):** All Spring Boot code — auth, blockchain, wallet, transactions, marketplace, external API, DB schema
+- **Gyle (Backend):** All Spring Boot code — auth, blockchain, wallet, transactions, marketplace, Blockfrost integration, DB schema, error handling improvements
 - **Karl (Frontend):** React pages, login/register, dashboard, marketplace UI, transfer form
 - **Kirsten (Frontend):** React pages, auth context, transaction history, chain verify UI, styling
 
@@ -286,14 +318,14 @@ The app will be available at `http://localhost:3000` (frontend) with the API at 
 This project was developed for academic purposes to demonstrate blockchain integration concepts within a one-week timeframe. As such:
 
 - Blockchain functionality is implemented as a self-built, SHA-256-hashed chain rather than deployed to a live network — no real cryptocurrency or monetary value is involved
-- External API usage is limited to a single free-tier service
+- External API usage is limited to Blockfrost free-tier (Cardano mainnet read-only access)
 - The system is intended for demonstration and evaluation, not production deployment
 
 ## Acknowledgments
 
 - John Quinnvic G. Taboada for guidance throughout the project
 - Course materials from CSIT360
-- Documentation from Spring Boot, React, and PostgreSQL communities
+- Documentation from Spring Boot, React, PostgreSQL, and Blockfrost communities
 
 ---
 

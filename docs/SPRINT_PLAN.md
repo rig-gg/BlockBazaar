@@ -4,7 +4,7 @@
 
 | Member | Role | Primary Focus |
 |--------|------|---------------|
-| **Gyle M. Amihan** | Backend (Solo) | All Spring Boot code: auth, blockchain, wallet, transactions, marketplace, external API, DB schema |
+| **Gyle M. Amihan** | Backend (Solo) | All Spring Boot code: auth, blockchain, wallet, transactions, marketplace, Blockfrost integration, DB schema, error handling |
 | **Karl Andrei B. Abriz** | Frontend | React pages, components, styling, API integration |
 | **Kirsten Shane Baldon** | Frontend | React pages, components, styling, API integration |
 
@@ -18,23 +18,23 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Create Spring Boot project (`spring-init` or Spring Initializr) | Gyle | ☐ |
-| Set up Supabase PostgreSQL project, share credentials | Gyle | ☐ |
-| Write and run `schema.sql` (all 4 tables) | Gyle | ☐ |
-| Configure `application.properties` (DB URL, JPA, JWT secret) | Gyle | ☐ |
-| Implement `User` and `Wallet` JPA models | Gyle | ☐ |
-| Implement `UserRepository` and `WalletRepository` | Gyle | ☐ |
-| Implement `AuthController` + `AuthService` (register + login) | Gyle | ☐ |
-| Implement `JwtUtil` and `JwtAuthFilter` | Gyle | ☐ |
-| Implement `SecurityConfig` (Spring Security + JWT filter) | Gyle | ☐ |
-| Create React project (`npx create-react-app frontend`) | Karl | ☐ |
-| Build React login page | Karl | ☐ |
-| Build React register page | Karl | ☐ |
+| Create Spring Boot project (`spring-init` or Spring Initializr) | Gyle | [x] |
+| Set up Supabase PostgreSQL project, share credentials | Gyle | [x] |
+| Write and run `schema.sql` (all 4 tables) | Gyle | [x] |
+| Configure `application.properties` (DB URL, JPA, JWT secret) | Gyle | [x] |
+| Implement `User` and `Wallet` JPA models | Gyle | [x] |
+| Implement `UserRepository` and `WalletRepository` | Gyle | [x] |
+| Implement `AuthController` + `AuthService` (register + login) | Gyle | [x] |
+| Implement `JwtUtil` and `JwtAuthFilter` | Gyle | [x] |
+| Implement `SecurityConfig` (Spring Security + JWT filter) | Gyle | [x] |
+| Create React project (`npx create-react-app frontend`) | Karl | [x] |
+| Build React login page | Karl | [x] |
+| Build React register page | Karl | [x] |
 | Set up `AuthContext` for JWT token storage | Kirsten | [x] |
 | Set up Axios API service with base URL | Kirsten | [x] |
 | Set up `ProtectedRoute` component | Kirsten | [x] |
-| Create `.env.example` with all required variables | Gyle | ☐ |
-| Set up Git branching strategy (main + feature branches) | Gyle | ☐ |
+| Create `.env.example` with all required variables | Gyle | [x] |
+| Set up Git branching strategy (main + feature branches) | Gyle | [x] |
 
 **Day 1 Deliverable:** Users can register and log in. JWT is returned and stored in frontend. Database has `users` and `wallets` tables.
 
@@ -44,18 +44,17 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Implement `Block` JPA model | Gyle | ☐ |
-| Implement `BlockRepository` | Gyle | ☐ |
-| Implement `BlockchainService` (hash computation, genesis block, chain walk) | Gyle | ☐ |
-| Implement `ChainController` (`GET /api/chain/verify`) | Gyle | ☐ |
-| Write SHA-256 hashing utility + unit test | Gyle | ☐ |
-| Implement `WalletController` (`GET /api/wallet`) | Gyle | ☐ |
-| Implement `WalletService` (balance check, wallet lookup) | Gyle | ☐ |
-| Wire auth: extract user from JWT in all endpoints | Gyle | ☐ |
-| Build Dashboard page (show balance, quick actions) | Karl | ☐ |
-| Build Navbar component with navigation links | Karl | ☐ |
+| Implement `Block` JPA model | Gyle | [x] |
+| Implement `BlockRepository` | Gyle | [x] |
+| Implement `BlockchainService` (hash computation, chain walk) | Gyle | [x] |
+| Implement `ChainController` (`GET /api/chain/verify`) | Gyle | [x] |
+| Implement `WalletController` (`GET /api/wallet`) | Gyle | [x] |
+| Implement `WalletService` (balance check, wallet lookup) | Gyle | [x] |
+| Wire auth: extract user from JWT in all endpoints | Gyle | [x] |
+| Build Dashboard page (show balance, quick actions) | Karl | [x] |
+| Build Navbar component with navigation links | Karl | [x] |
 | Build Chain Verification page (call `/api/chain/verify`, display result) | Kirsten | [x] |
-| Test auth + wallet endpoints with Postman/curl | Gyle | ☐ |
+| Test auth + wallet endpoints with Postman/curl | Gyle | [x] |
 
 **Day 2 Deliverable:** Blockchain hashing and verification works. Users can see their wallet balance. Chain verify returns integrity status.
 
@@ -65,16 +64,16 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Implement `TransferRequest` DTO | Gyle | ☐ |
-| Implement `TransactionService` (transfer logic: debit, credit, create block) | Gyle | ☐ |
-| Implement `TransactionController` (`POST /api/transactions/transfer`, `GET /api/transactions`) | Gyle | ☐ |
-| Add balance validation (reject if insufficient funds) | Gyle | ☐ |
-| Ensure every transfer creates a new Block with proper hash chaining | Gyle | ☐ |
-| Wire `BlockchainService` into `TransactionService` | Gyle | ☐ |
-| Build Transfer page (form: recipient username, amount) | Karl | ☐ |
+| Implement `TransferRequest` DTO | Gyle | [x] |
+| Implement `TransactionService` (transfer logic: debit, credit, create block) | Gyle | [x] |
+| Implement `TransactionController` (`POST /api/transactions/transfer`, `GET /api/transactions`) | Gyle | [x] |
+| Add balance validation (reject if insufficient funds) | Gyle | [x] |
+| Ensure every transfer creates a new Block with proper hash chaining | Gyle | [x] |
+| Wire `BlockchainService` into `TransactionService` | Gyle | [x] |
+| Build Transfer page (form: recipient username, amount) | Karl | [x] |
 | Build Transaction History page (table of past transactions) | Kirsten | [x] |
-| Add wallet balance display to Navbar or Dashboard | Karl | ☐ |
-| Test full transfer flow end-to-end (2 users, transfer, verify chain) | All | ☐ |
+| Add wallet balance display to Navbar or Dashboard | Karl | [x] |
+| Test full transfer flow end-to-end (2 users, transfer, verify chain) | All | [x] |
 
 **Day 3 Deliverable:** Users can transfer tokens. Every transfer is recorded as a block. Transaction history is visible. Chain verify detects any tampering.
 
@@ -84,17 +83,17 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Implement `Item` JPA model | Gyle | ☐ |
-| Implement `ItemRepository` | Gyle | ☐ |
-| Implement `MarketplaceService` (list, browse, buy) | Gyle | ☐ |
-| Implement `MarketplaceController` (GET items, POST list, POST buy) | Gyle | ☐ |
-| Integrate purchase flow with `BlockchainService` (create block on purchase) | Gyle | ☐ |
-| Handle sold-out items (status = "Sold", prevent double-buy) | Gyle | ☐ |
-| Build Marketplace browse page (grid/list of items) | Karl | ☐ |
+| Implement `Item` JPA model | Gyle | [x] |
+| Implement `ItemRepository` | Gyle | [x] |
+| Implement `MarketplaceService` (list, browse, buy) | Gyle | [x] |
+| Implement `MarketplaceController` (GET items, POST list, POST buy) | Gyle | [x] |
+| Integrate purchase flow with `BlockchainService` (create block on purchase) | Gyle | [x] |
+| Handle sold-out items (status = "Sold", prevent double-buy) | Gyle | [x] |
+| Build Marketplace browse page (grid/list of items) | Karl | [x] |
 | Build List Item form (name, price) | Kirsten | [x] |
 | Build Buy confirmation flow | Kirsten | [x] |
-| Add "My Listings" section for sellers | Karl | ☐ |
-| Test marketplace flow end-to-end | All | ☐ |
+| Add "My Listings" section for sellers | Karl | [x] |
+| Test marketplace flow end-to-end | All | [x] |
 
 **Day 4 Deliverable:** Full marketplace works. Users can list, browse, and buy items. Purchases are recorded on the blockchain.
 
@@ -104,15 +103,21 @@
 
 | Task | Assigned To | Status |
 |------|-------------|--------|
-| Integrate instructor-assigned external API (TBD) | Gyle | ☐ |
-| Add external API data to Dashboard or transaction flow | Gyle | ☐ |
-| Final end-to-end testing of all flows | Gyle | ☐ |
-| Verify chain tamper-detection works (manually alter a block, re-verify) | Gyle | ☐ |
-| UI cleanup, loading states, error messages | Karl | ☐ |
+| Integrate Blockfrost API (Cardano mainnet stats + tx lookup) | Gyle | [x] |
+| Add `/api/cardano/network` and `/api/cardano/tx/{hash}` endpoints | Gyle | [x] |
+| Fix error handling: custom exceptions with proper HTTP status codes | Gyle | [x] |
+| Fix SecurityConfig: JSON error responses instead of Whitelabel | Gyle | [x] |
+| Fix N+1 query in transaction history with JPQL JOIN | Gyle | [x] |
+| Fix genesis block placeholder hash issue | Gyle | [x] |
+| Fix block index race condition with MAX()+1 and synchronized | Gyle | [x] |
+| Move controllers to use SecurityContextHolder instead of manual JWT extraction | Gyle | [x] |
+| Final end-to-end testing of all flows | Gyle | [x] |
+| Verify chain tamper-detection works (manually alter a block, re-verify) | Gyle | [x] |
+| UI cleanup, loading states, error messages | Karl | [x] |
 | Responsive design pass (mobile-friendly) | Kirsten | [x] |
-| Update README.md with final documentation | All | ☐ |
-| Demo preparation (talking points, test data) | All | ☐ |
-| Bug fixes and final polish | All | ☐ |
+| Update README.md with final documentation | All | [x] |
+| Demo preparation (talking points, test data) | All | [x] |
+| Bug fixes and final polish | All | [x] |
 
 **Day 5 Deliverable:** Complete, polished application ready for demo and submission.
 
@@ -122,9 +127,9 @@
 
 ```
 main (protected)
-├── feature/backend        (Gyle)
-├── feature/frontend-1     (Karl)
-└── feature/frontend-2     (Kirsten)
+├── feature/backend-amihan    (Gyle)
+├── feature/frontend-karl     (Karl)
+└── feature/frontend-kirsten  (Kirsten)
 ```
 
 ### Rules
@@ -144,36 +149,36 @@ Gyle publishes this contract. Karl and Kirsten stub frontend pages using these s
 ```json
 // Request
 { "username": "string", "email": "string", "password": "string" }
-// Response
+// Response (201)
 { "token": "jwt-string", "userId": 1, "username": "string" }
 ```
 
 ### POST /api/auth/login
 ```json
 // Request
-{ "email": "string", "password": "string" }
-// Response
+{ "loginIdentifier": "string", "password": "string" }
+// Response (200)
 { "token": "jwt-string", "userId": 1, "username": "string" }
 ```
 
 ### GET /api/wallet
 ```json
 // Headers: Authorization: Bearer <jwt>
-// Response
-{ "walletId": 1, "balance": 100.00 }
+// Response (200)
+{ "walletId": 1, "userId": 1, "balance": 100.00 }
 ```
 
 ### POST /api/transactions/transfer
 ```json
 // Request
 { "receiverUsername": "string", "amount": 50.00 }
-// Response
+// Response (200)
 { "message": "Transfer successful", "blockHash": "sha256...", "newBalance": 50.00 }
 ```
 
 ### GET /api/transactions
 ```json
-// Response
+// Response (200)
 {
   "transactions": [
     {
@@ -191,7 +196,7 @@ Gyle publishes this contract. Karl and Kirsten stub frontend pages using these s
 
 ### GET /api/chain/verify
 ```json
-// Response
+// Response (200)
 {
   "valid": true,
   "totalBlocks": 5,
@@ -201,7 +206,7 @@ Gyle publishes this contract. Karl and Kirsten stub frontend pages using these s
 
 ### GET /api/marketplace/items
 ```json
-// Response
+// Response (200)
 {
   "items": [
     {
@@ -209,7 +214,8 @@ Gyle publishes this contract. Karl and Kirsten stub frontend pages using these s
       "name": "Digital Art #1",
       "price": 25.00,
       "seller": "alice",
-      "status": "Available"
+      "status": "Available",
+      "createdAt": "2025-07-18T12:00:00"
     }
   ]
 }
@@ -219,15 +225,60 @@ Gyle publishes this contract. Karl and Kirsten stub frontend pages using these s
 ```json
 // Request
 { "name": "Digital Art #1", "price": 25.00 }
-// Response
-{ "itemId": 1, "message": "Item listed successfully" }
+// Response (201)
+{ "itemId": 1, "name": "Digital Art #1", "price": 25.00, "message": "Item listed successfully" }
 ```
 
 ### POST /api/marketplace/items/{id}/buy
 ```json
-// Response
-{ "message": "Purchase successful", "blockHash": "sha256..." }
+// Response (200)
+{ "message": "Purchase successful", "itemId": 1, "itemName": "Digital Art #1", "blockHash": "sha256...", "newBalance": 50.00 }
 ```
+
+### GET /api/cardano/network
+```json
+// Response (200)
+{
+  "network": "cardano-mainnet",
+  "latestBlock": { "hash": "...", "height": 10482931, "slot": 12345678, "epoch": 523, "time": "..." },
+  "supply": { "total": "45000000000", "circulating": "37500000000" },
+  "health": true
+}
+```
+
+### GET /api/cardano/tx/{hash}
+```json
+// Response (200)
+{
+  "hash": "abc123...",
+  "block": 10482931,
+  "blockHeight": 10482931,
+  "index": 0,
+  "inputSum": "1500000",
+  "outputSum": "1497500",
+  "fee": "2500",
+  "inputCount": 1,
+  "outputCount": 2
+}
+```
+
+---
+
+## Error Response Format
+
+All errors follow this structure:
+```json
+{ "message": "Description of what went wrong" }
+```
+
+| Status | Meaning |
+|--------|---------|
+| 400 | Bad Request (validation errors, insufficient balance) |
+| 401 | Unauthorized (missing/invalid JWT) |
+| 403 | Forbidden (authenticated but not allowed) |
+| 404 | Not Found (user, wallet, item, transaction) |
+| 409 | Conflict (duplicate email/username) |
+| 500 | Internal Server Error (unexpected failures) |
 
 ---
 
