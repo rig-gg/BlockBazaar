@@ -95,25 +95,70 @@ public class BlockfrostService {
             ResponseEntity<Map> txResp = restTemplate.exchange(
                     apiUrl + "/txs/" + txHash, HttpMethod.GET, entity, Map.class);
 
+            if (txResp.getStatusCode().isError()) {
+                if (txResp.getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException("Transaction not found: " + txHash);
+                }
+                throw new RuntimeException("Cardano API returned error: " + txResp.getStatusCode());
+            }
+
             Map tx = txResp.getBody();
             if (tx == null) {
                 throw new NotFoundException("Transaction not found: " + txHash);
             }
 
             CardanoTxResponse response = new CardanoTxResponse();
-            response.setHash((String) tx.get("hash"));
-            response.setBlock(((Number) tx.get("block")).intValue());
-            response.setBlockHeight(((Number) tx.get("block_height")).intValue());
-            response.setIndex(((Number) tx.get("index")).intValue());
-            response.setFee(String.valueOf(tx.get("fees")));
+            response.setHash(String.valueOf(tx.get("hash")));
+
+            Object blockHeightRaw = tx.get("block_height");
+            if (blockHeightRaw instanceof Number) {
+                response.setBlockHeight(((Number) blockHeightRaw).intValue());
+            }
+
+            Object indexRaw = tx.get("index");
+            if (indexRaw instanceof Number) {
+                response.setIndex(((Number) indexRaw).intValue());
+            }
+
+            Object blockTimeRaw = tx.get("block_time");
+            if (blockTimeRaw instanceof Number) {
+                response.setBlockTime(((Number) blockTimeRaw).longValue());
+            }
+
+            Object slotRaw = tx.get("slot");
+            if (slotRaw instanceof Number) {
+                response.setSlot(((Number) slotRaw).intValue());
+            }
+
+            Object feesRaw = tx.get("fees");
+            if (feesRaw != null) {
+                response.setFee(String.valueOf(feesRaw));
+            }
+
+            Object outputSumRaw = tx.get("output_amount");
+            if (outputSumRaw instanceof List<?> amounts) {
+                long lovelace = amounts.stream()
+                    .filter(m -> m instanceof Map && "lovelace".equals(((Map<?, ?>) m).get("unit")))
+                    .mapToLong(m -> Long.parseLong(String.valueOf(((Map<?, ?>) m).get("quantity"))))
+                    .sum();
+                response.setOutputSum(String.valueOf(lovelace));
+            }
+
+            Object utxoCountRaw = tx.get("utxo_count");
+            if (utxoCountRaw instanceof Number) {
+                response.setOutputCount(((Number) utxoCountRaw).intValue());
+            }
 
             return response;
         } catch (HttpClientErrorException.NotFound e) {
             throw new NotFoundException("Transaction not found: " + txHash);
+        } catch (HttpClientErrorException e) {
+            log.error("Blockfrost API error for tx {}: {} - {}", txHash, e.getStatusCode(), e.getResponseBodyAsString(), e);
+            throw new RuntimeException("Cardano API error: " + e.getStatusCode());
         } catch (NotFoundException e) {
             throw e;
         } catch (Exception e) {
-            log.error("Failed to fetch Cardano transaction {}: {}", txHash, e.getMessage());
+            log.error("Failed to fetch Cardano transaction {}: {}", txHash, e.getMessage(), e);
             throw new RuntimeException("Failed to fetch transaction from Cardano network");
         }
     }

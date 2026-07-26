@@ -96,6 +96,10 @@ export default function Cardano() {
                 <span style={styles.resultValue}>#{txResult.blockHeight?.toLocaleString()}</span>
               </div>
               <div style={styles.resultRow}>
+                <span style={styles.resultLabel}>Slot</span>
+                <span style={styles.resultValue}>{txResult.slot?.toLocaleString() ?? "\u2014"}</span>
+              </div>
+              <div style={styles.resultRow}>
                 <span style={styles.resultLabel}>Index</span>
                 <span style={styles.resultValue}>{txResult.index}</span>
               </div>
@@ -104,11 +108,11 @@ export default function Cardano() {
                 <span style={styles.resultValue}>{txResult.fee ? `${Number(txResult.fee).toLocaleString()} lovelace` : "\u2014"}</span>
               </div>
               <div style={styles.resultRow}>
-                <span style={styles.resultLabel}>Inputs</span>
-                <span style={styles.resultValue}>{txResult.inputCount ?? "\u2014"}</span>
+                <span style={styles.resultLabel}>Output</span>
+                <span style={styles.resultValue}>{txResult.outputSum ? `${Number(txResult.outputSum).toLocaleString()} lovelace` : "\u2014"}</span>
               </div>
               <div style={styles.resultRow}>
-                <span style={styles.resultLabel}>Outputs</span>
+                <span style={styles.resultLabel}>UTXOs</span>
                 <span style={styles.resultValue}>{txResult.outputCount ?? "\u2014"}</span>
               </div>
             </div>
