@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Icon from "./Icon";
@@ -16,23 +17,26 @@ const NAV_LINKS = [
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
   };
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <header style={styles.header}>
-      <div style={styles.innerNav}>
-        <div style={styles.brand} onClick={() => navigate("/dashboard")}>
-          <div style={styles.brandBadge}>
+    <header className="bb-navbar">
+      <div className="bb-navbar-inner">
+        <div className="bb-navbar-brand" onClick={() => navigate("/dashboard")}>
+          <div className="bb-navbar-brand-badge">
             <Icon d={ICONS.cardano} size={18} strokeWidth={2.5} />
           </div>
-          <span style={styles.brandTitle}>BlockBazaar</span>
+          <span className="bb-navbar-brand-title">BlockBazaar</span>
         </div>
 
-        <nav style={styles.navLinks}>
+        <nav className="bb-navbar-links">
           {NAV_LINKS.map(({ to, label, icon }) => (
             <NavLink
               key={to}
@@ -46,66 +50,73 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div style={styles.rightActions}>
+        <div className="bb-navbar-actions">
           {user && (
-            <div style={styles.userChip} id="nav-user-chip">
-              <div style={styles.userAvatar}>
+            <div className="bb-navbar-user-chip" id="nav-user-chip">
+              <div className="bb-navbar-user-avatar">
                 <Icon d={ICONS.user} size={13} />
               </div>
-              <span style={styles.username}>{user.username}</span>
+              <span className="bb-navbar-username">{user.username}</span>
             </div>
           )}
-          <button id="btn-logout" onClick={handleLogout} className="bb-btn bb-btn-danger" style={styles.logoutBtn}>
+          <button id="btn-logout" onClick={handleLogout} className="bb-btn bb-btn-danger bb-navbar-logout-btn">
             <Icon d={ICONS.logout} size={14} />
             <span>Logout</span>
           </button>
         </div>
+
+        <button
+          id="btn-navbar-toggle"
+          type="button"
+          className="bb-navbar-toggle"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+        >
+          <Icon d={menuOpen ? ICONS.x : ICONS.menu} size={20} />
+        </button>
       </div>
+
+      {menuOpen && (
+        <div className="bb-navbar-mobile-menu animate-fade-up">
+          <nav className="bb-navbar-mobile-links">
+            {NAV_LINKS.map(({ to, label, icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                id={`nav-mobile-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                className={({ isActive }) => `bb-nav-item${isActive ? " active" : ""}`}
+                onClick={closeMenu}
+              >
+                <Icon d={icon} size={15} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="bb-navbar-mobile-footer">
+            {user && (
+              <div className="bb-navbar-user-chip" id="nav-user-chip-mobile">
+                <div className="bb-navbar-user-avatar">
+                  <Icon d={ICONS.user} size={13} />
+                </div>
+                <span className="bb-navbar-username">{user.username}</span>
+              </div>
+            )}
+            <button
+              id="btn-logout-mobile"
+              onClick={() => {
+                closeMenu();
+                handleLogout();
+              }}
+              className="bb-btn bb-btn-danger bb-navbar-logout-btn"
+            >
+              <Icon d={ICONS.logout} size={14} />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
-
-const styles = {
-  header: {
-    position: "sticky", top: 0, zIndex: 100,
-    background: "rgba(11, 15, 25, 0.82)",
-    backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-    borderBottom: "1px solid rgba(56, 189, 248, 0.12)",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.25)",
-  },
-  innerNav: {
-    maxWidth: "1280px", margin: "0 auto", padding: "0.6rem 1.5rem",
-    display: "flex", alignItems: "center", justifyContent: "space-between",
-    gap: "1rem", flexWrap: "wrap",
-  },
-  brand: { display: "flex", alignItems: "center", gap: "0.65rem", cursor: "pointer", userSelect: "none" },
-  brandBadge: {
-    width: "36px", height: "36px", borderRadius: "10px",
-    background: "linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(129, 140, 248, 0.25) 100%)",
-    border: "1px solid rgba(56, 189, 248, 0.4)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#38BDF8", boxShadow: "0 0 12px rgba(56, 189, 248, 0.25)",
-  },
-  brandTitle: {
-    fontFamily: "var(--font-heading)", fontSize: "1.15rem", fontWeight: "700",
-    background: "linear-gradient(135deg, #F8FAFC 0%, #38BDF8 100%)",
-    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.01em",
-  },
-  navLinks: {
-    display: "flex", alignItems: "center", gap: "0.25rem",
-    overflowX: "auto", padding: "0.2rem 0",
-  },
-  rightActions: { display: "flex", alignItems: "center", gap: "0.75rem" },
-  userChip: {
-    display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.8rem",
-    borderRadius: "999px", background: "rgba(56, 189, 248, 0.08)",
-    border: "1px solid rgba(56, 189, 248, 0.2)",
-  },
-  userAvatar: {
-    width: "22px", height: "22px", borderRadius: "50%",
-    background: "rgba(56, 189, 248, 0.2)",
-    display: "flex", alignItems: "center", justifyContent: "center", color: "#38BDF8",
-  },
-  username: { fontFamily: "var(--font-heading)", fontSize: "0.85rem", fontWeight: "600", color: "#CBD5E1" },
-  logoutBtn: { padding: "0.42rem 0.85rem", fontSize: "0.82rem", borderRadius: "8px" },
-};
