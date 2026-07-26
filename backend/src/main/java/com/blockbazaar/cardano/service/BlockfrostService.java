@@ -61,7 +61,8 @@ public class BlockfrostService {
                 latest.setHash((String) block.get("hash"));
                 latest.setHeight(((Number) block.get("height")).intValue());
                 latest.setSlot(((Number) block.get("slot")).longValue());
-                latest.setTime((String) block.get("time"));
+                Object timeRaw = block.get("time");
+                latest.setTime(timeRaw != null ? String.valueOf(timeRaw) : null);
             }
             if (epoch != null) {
                 latest.setEpoch(((Number) epoch.get("epoch")).intValue());
@@ -70,7 +71,10 @@ public class BlockfrostService {
 
             CardanoNetworkResponse.Supply supply = new CardanoNetworkResponse.Supply();
             if (networkResp.getBody() != null) {
-                supply.setTotal((String) networkResp.getBody().get("supply"));
+                Object supplyRaw = networkResp.getBody().get("supply");
+                if (supplyRaw instanceof Number) {
+                    supply.setTotal(((Number) supplyRaw).longValue());
+                }
             }
             response.setSupply(supply);
 
