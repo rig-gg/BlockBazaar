@@ -54,7 +54,7 @@ function Login() {
             <Icon d={ICONS.cardano} size={24} strokeWidth={2.5} />
           </div>
           <h1 className="bb-auth-title">BlockBazaar</h1>
-          <p className="bb-auth-subtitle">Welcome back! Sign in to access your Web3 portal.</p>
+          <p className="bb-auth-subtitle">Welcome back! Sign in to your marketplace account.</p>
         </div>
 
         {error && <Alert type="error">{error}</Alert>}
