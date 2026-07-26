@@ -28,18 +28,16 @@ public class MarketplaceController {
     }
 
     @GetMapping("/items/mine")
-    public ResponseEntity<Map<String, List<ItemResponse>>> getMyItems(
-            @RequestHeader("Authorization") String authHeader) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+    public ResponseEntity<Map<String, List<ItemResponse>>> getMyItems() {
+        Long userId = JwtAuthFilter.extractUserId();
         List<ItemResponse> items = marketplaceService.getMyItems(userId);
         return ResponseEntity.ok(Map.of("items", items));
     }
 
     @PostMapping("/items")
     public ResponseEntity<Map<String, Object>> listItem(
-            @RequestHeader("Authorization") String authHeader,
             @Valid @RequestBody ListItemRequest request) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+        Long userId = JwtAuthFilter.extractUserId();
         ItemResponse item = marketplaceService.listItem(userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
@@ -51,10 +49,8 @@ public class MarketplaceController {
     }
 
     @PostMapping("/items/{id}/buy")
-    public ResponseEntity<BuyResponse> buyItem(
-            @RequestHeader("Authorization") String authHeader,
-            @PathVariable("id") Long itemId) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+    public ResponseEntity<BuyResponse> buyItem(@PathVariable("id") Long itemId) {
+        Long userId = JwtAuthFilter.extractUserId();
         BuyResponse response = marketplaceService.buyItem(userId, itemId);
         return ResponseEntity.ok(response);
     }

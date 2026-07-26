@@ -16,8 +16,8 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping
-    public ResponseEntity<WalletResponse> getWallet(@RequestHeader("Authorization") String authHeader) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+    public ResponseEntity<WalletResponse> getWallet() {
+        Long userId = JwtAuthFilter.extractUserId();
         Wallet wallet = walletService.getWalletByUserId(userId);
 
         WalletResponse response = new WalletResponse();

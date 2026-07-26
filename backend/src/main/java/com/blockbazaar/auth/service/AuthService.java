@@ -5,6 +5,8 @@ import com.blockbazaar.auth.dto.LoginRequest;
 import com.blockbazaar.auth.dto.RegisterRequest;
 import com.blockbazaar.auth.entity.User;
 import com.blockbazaar.auth.repo.UserRepository;
+import com.blockbazaar.common.exception.ConflictException;
+import com.blockbazaar.common.exception.UnauthorizedException;
 import com.blockbazaar.security.JwtUtil;
 import com.blockbazaar.wallet.entity.Wallet;
 import com.blockbazaar.wallet.repo.WalletRepository;
@@ -24,10 +26,10 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new ConflictException("Email already exists");
         }
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new ConflictException("Username already exists");
         }
 
         User user = User.builder()
@@ -52,10 +54,10 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getLoginIdentifier())
                 .or(() -> userRepository.findByUsername(request.getLoginIdentifier()))
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new UnauthorizedException("Invalid credentials");
         }
 
         String token = JwtUtil.generateToken(user.getId(), user.getUsername());

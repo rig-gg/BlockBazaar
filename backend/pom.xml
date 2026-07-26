@@ -18,7 +18,7 @@
     <description>Blockchain-based marketplace token system</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <lombok.version>1.18.38</lombok.version>
         <jjwt.version>0.12.6</jjwt.version>
     </properties>
@@ -91,7 +91,7 @@
 
     <build>
         <plugins>
-            <!-- Ensure Lombok annotation processor runs explicitly on JDK 21+ -->
+            <!-- Ensure Lombok annotation processor runs explicitly -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

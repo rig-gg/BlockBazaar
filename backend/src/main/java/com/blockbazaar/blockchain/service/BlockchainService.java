@@ -40,7 +40,7 @@ public class BlockchainService {
         }
     }
 
-    public Block createBlock(int senderWallet, int receiverWallet, BigDecimal amount, String type) {
+    public synchronized Block createBlock(int senderWallet, int receiverWallet, BigDecimal amount, String type) {
         int nextIndex = getNextBlockIndex();
         LocalDateTime now = LocalDateTime.now();
         String prevHash = getLatestBlockHash();
@@ -66,8 +66,7 @@ public class BlockchainService {
     }
 
     private int getNextBlockIndex() {
-        long count = blockRepository.count();
-        return (int) count;
+        return blockRepository.findMaxBlockIndex() + 1;
     }
 
     private String getLatestBlockHash() {

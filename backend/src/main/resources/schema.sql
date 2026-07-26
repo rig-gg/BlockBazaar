@@ -60,17 +60,5 @@ CREATE INDEX IF NOT EXISTS idx_blocks_index ON blocks(block_index);
 CREATE INDEX IF NOT EXISTS idx_blocks_sender ON blocks(sender_wallet);
 CREATE INDEX IF NOT EXISTS idx_blocks_receiver ON blocks(receiver_wallet);
 
--- ============================================
--- GENESIS BLOCK (first block in the chain)
--- ============================================
-INSERT INTO blocks (block_index, timestamp, sender_wallet, receiver_wallet, amount, type, prev_hash, hash)
-VALUES (
-    0,
-    CURRENT_TIMESTAMP,
-    0,
-    0,
-    0.00,
-    'Transfer',
-    '0000000000000000000000000000000000000000000000000000000000000000',
-    'genesis-block-hash-replaced-at-runtime'
-);
+-- Genesis block is automatically created as the first real transaction (block index 0).
+-- The blockchain service handles empty chains correctly via verifyChain().

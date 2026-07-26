@@ -22,17 +22,15 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     public ResponseEntity<TransferResponse> transfer(
-            @RequestHeader("Authorization") String authHeader,
             @Valid @RequestBody TransferRequest request) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+        Long userId = JwtAuthFilter.extractUserId();
         TransferResponse response = transactionService.transfer(userId, request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, List<TransactionResponse>>> getTransactions(
-            @RequestHeader("Authorization") String authHeader) {
-        Long userId = JwtAuthFilter.extractUserId(authHeader);
+    public ResponseEntity<Map<String, List<TransactionResponse>>> getTransactions() {
+        Long userId = JwtAuthFilter.extractUserId();
         List<TransactionResponse> transactions = transactionService.getTransactions(userId);
         return ResponseEntity.ok(Map.of("transactions", transactions));
     }

@@ -4,6 +4,8 @@ import com.blockbazaar.auth.entity.User;
 import com.blockbazaar.auth.repo.UserRepository;
 import com.blockbazaar.blockchain.entity.Block;
 import com.blockbazaar.blockchain.service.BlockchainService;
+import com.blockbazaar.common.exception.ForbiddenException;
+import com.blockbazaar.common.exception.NotFoundException;
 import com.blockbazaar.marketplace.dto.BuyResponse;
 import com.blockbazaar.marketplace.dto.ItemResponse;
 import com.blockbazaar.marketplace.dto.ListItemRequest;
@@ -59,7 +61,7 @@ public class MarketplaceService {
     @Transactional
     public ItemResponse listItem(Long userId, ListItemRequest request) {
         User seller = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         Item item = Item.builder()
                 .name(request.getName())
@@ -74,27 +76,27 @@ public class MarketplaceService {
     @Transactional
     public BuyResponse buyItem(Long buyerUserId, Long itemId) {
         Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
+                .orElseThrow(() -> new NotFoundException("Item not found"));
 
         if ("Sold".equals(item.getStatus())) {
-            throw new RuntimeException("Item already sold");
+            throw new IllegalArgumentException("Item already sold");
         }
 
         if (item.getSeller().getId().equals(buyerUserId)) {
-            throw new RuntimeException("Cannot buy your own item");
+            throw new ForbiddenException("Cannot buy your own item");
         }
 
         User buyer = userRepository.findById(buyerUserId)
-                .orElseThrow(() -> new RuntimeException("Buyer not found"));
+                .orElseThrow(() -> new NotFoundException("Buyer not found"));
 
         Wallet buyerWallet = walletRepository.findByUserId(buyer.getId())
-                .orElseThrow(() -> new RuntimeException("Buyer wallet not found"));
+                .orElseThrow(() -> new NotFoundException("Buyer wallet not found"));
 
         Wallet sellerWallet = walletRepository.findByUserId(item.getSeller().getId())
-                .orElseThrow(() -> new RuntimeException("Seller wallet not found"));
+                .orElseThrow(() -> new NotFoundException("Seller wallet not found"));
 
         if (buyerWallet.getTokenBalance().compareTo(item.getPrice()) < 0) {
-            throw new RuntimeException("Insufficient balance");
+            throw new IllegalArgumentException("Insufficient balance");
         }
 
         buyerWallet.setTokenBalance(buyerWallet.getTokenBalance().subtract(item.getPrice()));

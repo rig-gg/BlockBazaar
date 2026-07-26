@@ -2,6 +2,7 @@ package com.blockbazaar.wallet.service;
 
 import com.blockbazaar.wallet.entity.Wallet;
 import com.blockbazaar.wallet.repo.WalletRepository;
+import com.blockbazaar.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,6 @@ public class WalletService {
 
     public Wallet getWalletByUserId(Long userId) {
         return walletRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+                .orElseThrow(() -> new NotFoundException("Wallet not found"));
     }
 }
