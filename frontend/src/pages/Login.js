@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
+import Alert from "../components/Alert";
 
 function Login() {
   const [loginIdentifier, setLoginIdentifier] = useState("");
@@ -56,12 +57,7 @@ function Login() {
           <p style={styles.subtitle}>Welcome back! Sign in to access your Web3 portal.</p>
         </div>
 
-        {error && (
-          <div style={styles.errorAlert} className="animate-scale-in">
-            <Icon d={ICONS.alertCircle} size={18} />
-            <span>{error}</span>
-          </div>
-        )}
+        {error && <Alert type="error">{error}</Alert>}
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
@@ -193,17 +189,6 @@ const styles = {
     fontSize: "0.88rem",
     color: "#94A3B8",
     lineHeight: "1.4",
-  },
-  errorAlert: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.6rem",
-    padding: "0.75rem 1rem",
-    background: "rgba(251, 113, 133, 0.12)",
-    border: "1px solid rgba(251, 113, 133, 0.3)",
-    borderRadius: "10px",
-    color: "#FB7185",
-    fontSize: "0.85rem",
   },
   form: {
     display: "flex",

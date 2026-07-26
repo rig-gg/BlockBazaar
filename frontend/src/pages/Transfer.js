@@ -3,6 +3,7 @@ import api from "../services/api";
 import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
 import PageLayout from "../components/PageLayout";
+import Alert from "../components/Alert";
 
 export default function Transfer() {
   const [recipientUsername, setRecipientUsername] = useState("");
@@ -86,19 +87,9 @@ export default function Transfer() {
             <h2 style={{ fontSize: "1.2rem", fontWeight: "700" }}>Send Tokens</h2>
           </div>
 
-          {error && (
-            <div style={styles.errorAlert} className="animate-scale-in">
-              <Icon d={ICONS.alert} size={16} color="#FB7185" />
-              <span>{error}</span>
-            </div>
-          )}
+          {error && <Alert type="error" icon={ICONS.alert} iconSize={16}>{error}</Alert>}
 
-          {success && (
-            <div style={styles.successAlert} className="animate-scale-in">
-              <Icon d={ICONS.check} size={16} color="#34D399" />
-              <span>{success}</span>
-            </div>
-          )}
+          {success && <Alert type="success" iconSize={16}>{success}</Alert>}
 
           <form onSubmit={handleSubmit} style={styles.form}>
             <div>
@@ -222,16 +213,6 @@ const styles = {
   form: { display: "flex", flexDirection: "column", gap: "1.1rem" },
   label: { fontSize: "0.85rem", fontWeight: "600", color: "#CBD5E1", marginBottom: "0.35rem", display: "block" },
   pctRow: { display: "flex", gap: "0.4rem", marginTop: "0.5rem" },
-  errorAlert: {
-    display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.75rem 1rem",
-    background: "rgba(251, 113, 133, 0.12)", border: "1px solid rgba(251, 113, 133, 0.3)",
-    borderRadius: "10px", color: "#FB7185", fontSize: "0.85rem",
-  },
-  successAlert: {
-    display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.75rem 1rem",
-    background: "rgba(52, 211, 153, 0.12)", border: "1px solid rgba(52, 211, 153, 0.3)",
-    borderRadius: "10px", color: "#34D399", fontSize: "0.85rem",
-  },
   summaryCard: { padding: "1.8rem", display: "flex", flexDirection: "column", gap: "1.2rem" },
   summaryDetails: { display: "flex", flexDirection: "column", gap: "0.8rem" },
   summaryRow: { display: "flex", justifyContent: "space-between", alignItems: "center" },
