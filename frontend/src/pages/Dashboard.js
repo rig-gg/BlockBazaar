@@ -70,8 +70,13 @@ export default function Dashboard() {
 
       {/* Loading State */}
       {loading && (
-        <div className="glass-card" style={{ padding: "3rem", textAlign: "center", color: "#94A3B8" }}>
-          Loading wallet data...
+        <div style={styles.statsGrid}>
+          {[1, 2, 3].map((k) => (
+            <div key={k} className="glass-card bb-skeleton-stat" style={styles.statCard}>
+              <span className="bb-skeleton bb-skeleton-line" />
+              <span className="bb-skeleton bb-skeleton-line" />
+            </div>
+          ))}
         </div>
       )}
 
