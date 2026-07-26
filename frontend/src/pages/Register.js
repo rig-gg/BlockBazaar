@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
+import Alert from "../components/Alert";
 
 function Register() {
   const navigate = useNavigate();
@@ -75,19 +76,9 @@ function Register() {
           <p style={styles.subtitle}>Join BlockBazaar to trade, transfer tokens, and verify block hashes.</p>
         </div>
 
-        {error && (
-          <div style={styles.errorAlert} className="animate-scale-in">
-            <Icon d={ICONS.alertCircle} size={18} />
-            <span>{error}</span>
-          </div>
-        )}
+        {error && <Alert type="error">{error}</Alert>}
 
-        {success && (
-          <div style={styles.successAlert} className="animate-scale-in">
-            <Icon d={ICONS.check} size={18} />
-            <span>{success}</span>
-          </div>
-        )}
+        {success && <Alert type="success">{success}</Alert>}
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
@@ -247,28 +238,6 @@ const styles = {
     fontSize: "0.88rem",
     color: "#94A3B8",
     lineHeight: "1.4",
-  },
-  errorAlert: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.6rem",
-    padding: "0.75rem 1rem",
-    background: "rgba(251, 113, 133, 0.12)",
-    border: "1px solid rgba(251, 113, 133, 0.3)",
-    borderRadius: "10px",
-    color: "#FB7185",
-    fontSize: "0.85rem",
-  },
-  successAlert: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.6rem",
-    padding: "0.75rem 1rem",
-    background: "rgba(52, 211, 153, 0.12)",
-    border: "1px solid rgba(52, 211, 153, 0.3)",
-    borderRadius: "10px",
-    color: "#34D399",
-    fontSize: "0.85rem",
   },
   form: {
     display: "flex",
