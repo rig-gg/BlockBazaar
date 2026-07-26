@@ -20,7 +20,7 @@ public class CardanoNetworkResponse {
 
     @Data
     public static class Supply {
-        private String total;
-        private String circulating;
+        private Long total;
+        private Long circulating;
     }
 }
