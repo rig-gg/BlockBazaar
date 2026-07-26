@@ -4,8 +4,10 @@ import api from "../services/api";
 import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
 import PageLayout from "../components/PageLayout";
+import { useToast } from "../context/ToastContext";
 
 function ListItemModal({ onClose, onSuccess }) {
+  const toast = useToast();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,6 +23,7 @@ function ListItemModal({ onClose, onSuccess }) {
     setLoading(true);
     try {
       await api.post("/marketplace/items", { name: name.trim(), price: p });
+      toast.success(`"${name.trim()}" was listed on BlockBazaar!`);
       onSuccess();
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Failed to list item.");

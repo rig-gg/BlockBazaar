@@ -4,12 +4,13 @@ import Icon from "../components/Icon";
 import ICONS from "../constants/icons";
 import PageLayout from "../components/PageLayout";
 import Alert from "../components/Alert";
+import { useToast } from "../context/ToastContext";
 
 export default function Transfer() {
+  const toast = useToast();
   const [recipientUsername, setRecipientUsername] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState(null);
 
@@ -28,7 +29,6 @@ export default function Transfer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     if (!recipientUsername.trim()) {
       setError("Please enter a recipient's username.");
@@ -47,7 +47,7 @@ export default function Transfer() {
         amount: numericAmount,
       });
 
-      setSuccess(data.message || `Successfully transferred ${numericAmount.toFixed(2)} MKT to @${recipientUsername.trim()}!`);
+      toast.success(data.message || `Successfully transferred ${numericAmount.toFixed(2)} MKT to @${recipientUsername.trim()}!`);
       setRecipientUsername("");
       setAmount("");
 
@@ -88,8 +88,6 @@ export default function Transfer() {
           </div>
 
           {error && <Alert type="error" icon={ICONS.alert} iconSize={16}>{error}</Alert>}
-
-          {success && <Alert type="success" iconSize={16}>{success}</Alert>}
 
           <form onSubmit={handleSubmit} style={styles.form}>
             <div>
