@@ -24,15 +24,22 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      // Server responded with a non-2xx status
+      const { status } = error.response;
+
+      if (status === 401) {
+        localStorage.removeItem("bb_token");
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+
       const message =
         error.response.data?.message ||
         error.response.data?.error ||
-        `Request failed with status ${error.response.status}`;
+        `Request failed with status ${status}`;
       return Promise.reject(new Error(message));
     }
     if (error.request) {
-      // Request was made but no response received
       return Promise.reject(
         new Error("Cannot reach the server. Is the backend running?")
       );
