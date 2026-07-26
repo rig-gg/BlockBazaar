@@ -50,8 +50,35 @@ export default function Transactions() {
       </div>
 
       {loading ? (
-        <div className="glass-card" style={{ padding: "3rem", textAlign: "center", color: "#94A3B8" }}>
-          Loading ledger history...
+        <div className="glass-card" style={styles.tableCard}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>Block #</th>
+                  <th style={styles.th}>Date & Time</th>
+                  <th style={styles.th}>Type</th>
+                  <th style={styles.th}>Sender</th>
+                  <th style={styles.th}>Receiver</th>
+                  <th style={styles.th}>Amount</th>
+                  <th style={styles.th}>Transaction Hash</th>
+                </tr>
+              </thead>
+              <tbody className="bb-skeleton-table">
+                {[1, 2, 3, 4, 5].map((k) => (
+                  <tr key={k} style={styles.tr}>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-pill" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                    <td style={styles.td}><span className="bb-skeleton bb-skeleton-line" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : error ? (
         <div className="glass-card" style={styles.errorBox}>

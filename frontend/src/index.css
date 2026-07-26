@@ -310,6 +310,64 @@ code, pre {
   color: var(--accent-emerald);
 }
 
+/* ── Skeletons ── */
+.bb-skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.bb-skeleton-line {
+  display: inline-block;
+  height: 0.85rem;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.bb-skeleton-pill {
+  display: inline-block;
+  height: 1.4rem;
+  width: 60px;
+  border-radius: 999px;
+}
+
+/* Dashboard stat-card skeleton: label line, then a taller value line */
+.bb-skeleton-stat .bb-skeleton-line:first-child {
+  width: 45%;
+  height: 0.7rem;
+}
+
+.bb-skeleton-stat .bb-skeleton-line:last-child {
+  width: 65%;
+  height: 1.5rem;
+  margin-top: 0.2rem;
+}
+
+/* Transactions table skeleton: one width per column (Block, Date, Type, Sender, Receiver, Amount, Hash) */
+.bb-skeleton-table td:nth-child(1) .bb-skeleton-line {
+  width: 50px;
+}
+
+.bb-skeleton-table td:nth-child(2) .bb-skeleton-line {
+  width: 130px;
+}
+
+.bb-skeleton-table td:nth-child(4) .bb-skeleton-line {
+  width: 80px;
+}
+
+.bb-skeleton-table td:nth-child(5) .bb-skeleton-line {
+  width: 80px;
+}
+
+.bb-skeleton-table td:nth-child(6) .bb-skeleton-line {
+  width: 70px;
+}
+
+.bb-skeleton-table td:nth-child(7) .bb-skeleton-line {
+  width: 140px;
+}
+
 /* ── Auth Pages (Login/Register) ── */
 .bb-auth-page {
   min-height: 100vh;

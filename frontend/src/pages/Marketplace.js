@@ -260,7 +260,7 @@ export default function Marketplace() {
       {loading ? (
         <div style={styles.grid}>
           {[1, 2, 3, 4, 5, 6].map((k) => (
-            <div key={k} className="glass-card" style={{ height: "210px", padding: "1.5rem" }} />
+            <div key={k} className="glass-card bb-skeleton" style={{ height: "210px", padding: "1.5rem" }} />
           ))}
         </div>
       ) : error ? (

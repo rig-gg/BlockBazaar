@@ -142,7 +142,7 @@ export default function MyListings() {
           {loading ? (
             <div style={styles.listingsGrid}>
               {[1, 2].map((k) => (
-                <div key={k} className="glass-card" style={{ height: "140px" }} />
+                <div key={k} className="glass-card bb-skeleton" style={{ height: "140px" }} />
               ))}
             </div>
           ) : listError ? (
