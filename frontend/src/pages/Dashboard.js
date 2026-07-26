@@ -7,7 +7,7 @@ import ICONS from "../constants/icons";
 import PageLayout from "../components/PageLayout";
 
 const QUICK_ACTIONS = [
-  { id: "qa-transfer",  label: "Send Tokens",     description: "Transfer MKT to another user instantly.",   route: "/transfer",     icon: ICONS.transfer,  iconBg: "rgba(56, 189, 248, 0.15)" },
+  { id: "qa-transfer",  label: "Send Tokens",     description: "Transfer MKT to another user instantly.",   route: "/transfer",     icon: ICONS.send,      iconBg: "rgba(56, 189, 248, 0.15)" },
   { id: "qa-market",    label: "Browse Marketplace",description: "Discover and buy listed digital assets.", route: "/marketplace",  icon: ICONS.market,    iconBg: "rgba(129, 140, 248, 0.15)" },
   { id: "qa-my-list",   label: "My Listings",      description: "Manage assets you have listed for sale.",   route: "/my-listings",  icon: ICONS.listings,  iconBg: "rgba(52, 211, 153, 0.15)" },
   { id: "qa-history",   label: "View Transactions", description: "Review your immutable on-chain ledger.",   route: "/transactions", icon: ICONS.history,   iconBg: "rgba(251, 191, 36, 0.15)" },

@@ -110,7 +110,7 @@ function BuyModal({ item, onClose, onSuccess }) {
             </div>
             <div style={modalStyles.proofBox}>
               <div style={modalStyles.proofHeader}>
-                <Icon d={ICONS.link} size={14} color="#38BDF8" />
+                <Icon d={ICONS.chain} size={14} color="#38BDF8" />
                 <span>On-Chain Transaction Proof</span>
               </div>
               <code style={modalStyles.proofHash}>{result.blockHash}</code>

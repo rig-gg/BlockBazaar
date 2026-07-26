@@ -7,8 +7,8 @@ const NAV_LINKS = [
   { to: "/dashboard",    label: "Dashboard",    icon: ICONS.dashboard },
   { to: "/marketplace",  label: "Marketplace",  icon: ICONS.market },
   { to: "/my-listings",  label: "My Listings",  icon: ICONS.listings },
-  { to: "/transactions", label: "Transactions", icon: ICONS.txHistory },
-  { to: "/transfer",     label: "Transfer",     icon: ICONS.transfer },
+  { to: "/transactions", label: "Transactions", icon: ICONS.history },
+  { to: "/transfer",     label: "Transfer",     icon: ICONS.send },
   { to: "/chain-verify", label: "Chain Verify", icon: ICONS.chain },
   { to: "/cardano",      label: "Cardano",      icon: ICONS.cardano },
 ];
