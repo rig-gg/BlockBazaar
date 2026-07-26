@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Icon from "./Icon";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -8,6 +9,10 @@ export default class ErrorBoundary extends Component {
 
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
   handleRetry = () => {
@@ -20,9 +25,11 @@ export default class ErrorBoundary extends Component {
         <div style={styles.container}>
           <div style={styles.card}>
             <div style={styles.iconCircle}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FB7185" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01" />
-              </svg>
+              <Icon
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01"
+                size={32}
+                color="#FB7185"
+              />
             </div>
             <h1 style={styles.title}>Something went wrong</h1>
             <p style={styles.message}>
