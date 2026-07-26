@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class CardanoTxResponse {
     private String hash;
-    private int block;
     private int blockHeight;
     private int index;
-    private String inputSum;
+    private long blockTime;
+    private int slot;
     private String outputSum;
     private String fee;
     private int inputCount;
