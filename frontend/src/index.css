@@ -124,6 +124,11 @@ code, pre {
   100% { background-position: 600px 0; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .animate-fade-up {
   animation: fadeUp 0.35s ease-out forwards;
 }
