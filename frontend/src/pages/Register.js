@@ -61,28 +61,28 @@ function Register() {
   };
 
   return (
-    <div style={styles.page}>
+    <div className="bb-auth-page bb-auth-register">
       {/* Background Decorative Ambient Glows */}
-      <div style={styles.glowTopRight} />
-      <div style={styles.glowBottomLeft} />
+      <div className="bb-auth-glow bb-auth-glow-top" />
+      <div className="bb-auth-glow bb-auth-glow-bottom" />
 
-      <div className="glass-card animate-fade-up" style={styles.card}>
+      <div className="glass-card animate-fade-up bb-auth-card">
         {/* Brand Header */}
-        <div style={styles.header}>
-          <div style={styles.logoBadge}>
+        <div className="bb-auth-header">
+          <div className="bb-auth-logo-badge">
             <Icon d={ICONS.userPlus} size={24} strokeWidth={2.5} />
           </div>
-          <h1 style={styles.title}>Create Account</h1>
-          <p style={styles.subtitle}>Join BlockBazaar to trade, transfer tokens, and verify block hashes.</p>
+          <h1 className="bb-auth-title">Create Account</h1>
+          <p className="bb-auth-subtitle">Join BlockBazaar to trade, transfer tokens, and verify block hashes.</p>
         </div>
 
         {error && <Alert type="error">{error}</Alert>}
 
         {success && <Alert type="success">{success}</Alert>}
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Username</label>
+        <form onSubmit={handleSubmit} className="bb-auth-form">
+          <div className="bb-auth-input-group">
+            <label className="bb-auth-label">Username</label>
             <input
               id="input-register-username"
               className="bb-input"
@@ -95,8 +95,8 @@ function Register() {
             />
           </div>
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Email Address</label>
+          <div className="bb-auth-input-group">
+            <label className="bb-auth-label">Email Address</label>
             <input
               id="input-register-email"
               className="bb-input"
@@ -108,9 +108,9 @@ function Register() {
             />
           </div>
 
-          <div style={styles.inputRow}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Password</label>
+          <div className="bb-auth-input-row">
+            <div className="bb-auth-input-group">
+              <label className="bb-auth-label">Password</label>
               <input
                 id="input-register-password"
                 className="bb-input"
@@ -122,8 +122,8 @@ function Register() {
               />
             </div>
 
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Confirm Password</label>
+            <div className="bb-auth-input-group">
+              <label className="bb-auth-label">Confirm Password</label>
               <input
                 id="input-register-confirm"
                 className="bb-input"
@@ -139,9 +139,8 @@ function Register() {
           <button
             id="btn-register-submit"
             type="submit"
-            className="bb-btn bb-btn-emerald"
+            className="bb-btn bb-btn-emerald bb-auth-submit-btn"
             disabled={loading}
-            style={styles.submitBtn}
           >
             {loading ? (
               <>
@@ -158,9 +157,9 @@ function Register() {
           </button>
         </form>
 
-        <div style={styles.footer}>
+        <div className="bb-auth-footer">
           <span>Already have an account?</span>{" "}
-          <Link to="/login" style={styles.loginLink} id="link-login">
+          <Link to="/login" className="bb-auth-link" id="link-login">
             Sign In
           </Link>
         </div>
@@ -168,116 +167,5 @@ function Register() {
     </div>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "1.5rem",
-    position: "relative",
-    overflow: "hidden",
-  },
-  glowTopRight: {
-    position: "absolute",
-    top: "-10%",
-    right: "-10%",
-    width: "450px",
-    height: "450px",
-    background: "radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, transparent 70%)",
-    pointerEvents: "none",
-  },
-  glowBottomLeft: {
-    position: "absolute",
-    bottom: "-10%",
-    left: "-10%",
-    width: "450px",
-    height: "450px",
-    background: "radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)",
-    pointerEvents: "none",
-  },
-  card: {
-    width: "100%",
-    maxWidth: "460px",
-    padding: "2.5rem 2rem",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.4rem",
-    position: "relative",
-    zIndex: 1,
-  },
-  header: {
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "0.5rem",
-  },
-  logoBadge: {
-    width: "52px",
-    height: "52px",
-    borderRadius: "14px",
-    background: "linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%)",
-    border: "1px solid rgba(52, 211, 153, 0.4)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#34D399",
-    marginBottom: "0.5rem",
-    boxShadow: "0 0 20px rgba(52, 211, 153, 0.25)",
-  },
-  title: {
-    fontSize: "1.8rem",
-    fontWeight: "700",
-    background: "linear-gradient(135deg, #F8FAFC 0%, #34D399 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  subtitle: {
-    fontSize: "0.88rem",
-    color: "#94A3B8",
-    lineHeight: "1.4",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.1rem",
-  },
-  inputRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "0.8rem",
-  },
-  inputGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.4rem",
-  },
-  label: {
-    fontSize: "0.85rem",
-    fontWeight: "600",
-    color: "#CBD5E1",
-  },
-  submitBtn: {
-    marginTop: "0.4rem",
-    padding: "0.85rem",
-    fontSize: "0.95rem",
-    width: "100%",
-  },
-  footer: {
-    textAlign: "center",
-    fontSize: "0.88rem",
-    color: "#94A3B8",
-    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-    paddingTop: "1.2rem",
-  },
-  loginLink: {
-    color: "#34D399",
-    fontWeight: "600",
-    textDecoration: "none",
-    transition: "color 0.2s",
-  },
-};
 
 export default Register;

@@ -310,6 +310,180 @@ code, pre {
   color: var(--accent-emerald);
 }
 
+/* ── Auth Pages (Login/Register) ── */
+.bb-auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.bb-auth-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bb-auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bb-auth-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #CBD5E1;
+}
+
+.bb-auth-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.bb-auth-footer {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.2rem;
+}
+
+.bb-auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bb-auth-register .bb-auth-card {
+  max-width: 460px;
+  gap: 1.4rem;
+}
+
+.bb-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.bb-auth-register .bb-auth-form {
+  gap: 1.1rem;
+}
+
+.bb-auth-submit-btn {
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.bb-auth-register .bb-auth-submit-btn {
+  margin-top: 0.4rem;
+}
+
+.bb-auth-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+/* Page accent + gradient-stop values consumed by the glow/badge/title/link rules below.
+   The *-b variants intentionally hold the other page's accent color for the secondary
+   glow/gradient stop (Login's is violet, Register's is cyan); rgba() can't take a var()
+   for r/g/b, so those triplets are numeric literals rather than var(--accent-violet). */
+.bb-auth-login {
+  --page-accent: var(--accent-cyan);
+  --page-glow-a: rgba(56, 189, 248, 0.15);
+  --page-glow-b: rgba(129, 140, 248, 0.15);
+  --page-badge-grad-a: rgba(56, 189, 248, 0.2);
+  --page-badge-grad-b: rgba(129, 140, 248, 0.2);
+  --page-badge-border: rgba(56, 189, 248, 0.4);
+  --page-badge-shadow: rgba(56, 189, 248, 0.25);
+}
+
+.bb-auth-register {
+  --page-accent: var(--accent-emerald);
+  --page-glow-a: rgba(52, 211, 153, 0.15);
+  --page-glow-b: rgba(56, 189, 248, 0.15);
+  --page-badge-grad-a: rgba(52, 211, 153, 0.2);
+  --page-badge-grad-b: rgba(56, 189, 248, 0.2);
+  --page-badge-border: rgba(52, 211, 153, 0.4);
+  --page-badge-shadow: rgba(52, 211, 153, 0.25);
+}
+
+.bb-auth-glow {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  pointer-events: none;
+}
+
+.bb-auth-glow-top {
+  top: -10%;
+  background: radial-gradient(circle, var(--page-glow-a) 0%, transparent 70%);
+}
+
+.bb-auth-glow-bottom {
+  bottom: -10%;
+  background: radial-gradient(circle, var(--page-glow-b) 0%, transparent 70%);
+}
+
+.bb-auth-login .bb-auth-glow-top {
+  left: -10%;
+}
+
+.bb-auth-login .bb-auth-glow-bottom {
+  right: -10%;
+}
+
+.bb-auth-register .bb-auth-glow-top {
+  right: -10%;
+}
+
+.bb-auth-register .bb-auth-glow-bottom {
+  left: -10%;
+}
+
+.bb-auth-logo-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--page-badge-grad-a) 0%, var(--page-badge-grad-b) 100%);
+  border: 1px solid var(--page-badge-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--page-accent);
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 20px var(--page-badge-shadow);
+}
+
+.bb-auth-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--page-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bb-auth-link {
+  color: var(--page-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
 /* ── Navbar ── */
 .bb-nav-item {
   display: flex;

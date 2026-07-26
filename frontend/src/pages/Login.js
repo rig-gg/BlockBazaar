@@ -42,26 +42,26 @@ function Login() {
   };
 
   return (
-    <div style={styles.page}>
+    <div className="bb-auth-page bb-auth-login">
       {/* Background Decorative Ambient Glows */}
-      <div style={styles.glowTopLeft} />
-      <div style={styles.glowBottomRight} />
+      <div className="bb-auth-glow bb-auth-glow-top" />
+      <div className="bb-auth-glow bb-auth-glow-bottom" />
 
-      <div className="glass-card animate-fade-up" style={styles.card}>
+      <div className="glass-card animate-fade-up bb-auth-card">
         {/* Brand Header */}
-        <div style={styles.header}>
-          <div style={styles.logoBadge}>
+        <div className="bb-auth-header">
+          <div className="bb-auth-logo-badge">
             <Icon d={ICONS.cardano} size={24} strokeWidth={2.5} />
           </div>
-          <h1 style={styles.title}>BlockBazaar</h1>
-          <p style={styles.subtitle}>Welcome back! Sign in to access your Web3 portal.</p>
+          <h1 className="bb-auth-title">BlockBazaar</h1>
+          <p className="bb-auth-subtitle">Welcome back! Sign in to access your Web3 portal.</p>
         </div>
 
         {error && <Alert type="error">{error}</Alert>}
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Username or Email</label>
+        <form onSubmit={handleSubmit} className="bb-auth-form">
+          <div className="bb-auth-input-group">
+            <label className="bb-auth-label">Username or Email</label>
             <input
               id="input-login-identifier"
               className="bb-input"
@@ -74,8 +74,8 @@ function Login() {
             />
           </div>
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Password</label>
+          <div className="bb-auth-input-group">
+            <label className="bb-auth-label">Password</label>
             <input
               id="input-login-password"
               className="bb-input"
@@ -90,9 +90,8 @@ function Login() {
           <button
             id="btn-login-submit"
             type="submit"
-            className="bb-btn bb-btn-primary"
+            className="bb-btn bb-btn-primary bb-auth-submit-btn"
             disabled={loading}
-            style={styles.submitBtn}
           >
             {loading ? (
               <>
@@ -109,9 +108,9 @@ function Login() {
           </button>
         </form>
 
-        <div style={styles.footer}>
+        <div className="bb-auth-footer">
           <span>Don't have an account?</span>{" "}
-          <Link to="/register" style={styles.registerLink} id="link-register">
+          <Link to="/register" className="bb-auth-link" id="link-register">
             Create an Account
           </Link>
         </div>
@@ -119,111 +118,5 @@ function Login() {
     </div>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "1.5rem",
-    position: "relative",
-    overflow: "hidden",
-  },
-  glowTopLeft: {
-    position: "absolute",
-    top: "-10%",
-    left: "-10%",
-    width: "450px",
-    height: "450px",
-    background: "radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)",
-    pointerEvents: "none",
-  },
-  glowBottomRight: {
-    position: "absolute",
-    bottom: "-10%",
-    right: "-10%",
-    width: "450px",
-    height: "450px",
-    background: "radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, transparent 70%)",
-    pointerEvents: "none",
-  },
-  card: {
-    width: "100%",
-    maxWidth: "420px",
-    padding: "2.5rem 2rem",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.5rem",
-    position: "relative",
-    zIndex: 1,
-  },
-  header: {
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "0.5rem",
-  },
-  logoBadge: {
-    width: "52px",
-    height: "52px",
-    borderRadius: "14px",
-    background: "linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%)",
-    border: "1px solid rgba(56, 189, 248, 0.4)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#38BDF8",
-    marginBottom: "0.5rem",
-    boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)",
-  },
-  title: {
-    fontSize: "1.8rem",
-    fontWeight: "700",
-    background: "linear-gradient(135deg, #F8FAFC 0%, #38BDF8 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  subtitle: {
-    fontSize: "0.88rem",
-    color: "#94A3B8",
-    lineHeight: "1.4",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.2rem",
-  },
-  inputGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.4rem",
-  },
-  label: {
-    fontSize: "0.85rem",
-    fontWeight: "600",
-    color: "#CBD5E1",
-  },
-  submitBtn: {
-    marginTop: "0.5rem",
-    padding: "0.85rem",
-    fontSize: "0.95rem",
-    width: "100%",
-  },
-  footer: {
-    textAlign: "center",
-    fontSize: "0.88rem",
-    color: "#94A3B8",
-    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-    paddingTop: "1.2rem",
-  },
-  registerLink: {
-    color: "#38BDF8",
-    fontWeight: "600",
-    textDecoration: "none",
-    transition: "color 0.2s",
-  },
-};
 
 export default Login;
